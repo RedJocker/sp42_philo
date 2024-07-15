@@ -1,0 +1,22 @@
+# emacs temp
+*~
+\#*\#
+
+# bins and deps
+*.o
+*.d
+*.a
+*.dSYM
+
+**/TAGS
+
+# tests
+
+**/tests/
+**/test
+
+**/a.out
+philo
+philo_bonus
+
+valgrind-out.txt
