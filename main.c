@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:37:36 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/17 19:03:42 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/18 00:45:45 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ typedef struct s_philo
 	int			sleep_time;
 	int			eat_time;
 	int			death_time;
-	long		last_meal_time;
+	int			is_dead;
+	long long	last_meal_time;
 	int			times_to_eat;
-	pthread_t	thread;
+	pthread_t   thread;
 }	t_philo;
 
 typedef struct s_cutlery
 {
 	pthread_mutex_t	mutex;
-	int				owned_by;
 }	t_cutlery;
 
 typedef struct s_table
@@ -51,11 +51,13 @@ typedef struct s_philo_args
 	int	num_philos;
 	int	time_to_die;
 	int	time_to_eat;
-	int time_to_sleep;
+	int	time_to_sleep;
 	int	times_to_eat;
 }	t_philo_args;
 
-long long get_time_millis()
+int	table_is_serving(t_table *table);
+
+long long	get_time_millis(void)
 {
 	struct timeval	tv;
 	long long		time_millis;
@@ -82,16 +84,52 @@ void	logger(t_table *table, char *message, int philo_id)
 	pthread_mutex_unlock(&table->log_lock);
 }
 
+void	logger_f(t_table *table, char *message, int philo_id, int fork)
+{
+	long long	uptime;
+
+	pthread_mutex_lock(&table->log_lock);
+	{
+		uptime = get_time_millis() - table->init_time;
+		printf("%lld %d %s %d\n", uptime, philo_id, message, fork);
+	}
+	pthread_mutex_unlock(&table->log_lock);
+}
+
+int	philo_isdead(t_philo *philo, t_table *table)
+{
+	long long	time;
+
+	time = get_time_millis() - table->init_time;
+	if (time - philo->last_meal_time > philo->death_time)
+	{
+		philo->is_dead = 1;
+		pthread_mutex_lock(&table->table_lock);
+		table->any_death = 1;
+		pthread_mutex_unlock(&table->table_lock);
+		logger(table, "died", philo->id);
+		return (1);
+	}
+	else
+		return (0);
+}
+
 void	philo_think(t_philo *philo, t_table *table)
 {
-	logger(table, "is thinking", philo->id);
+	if (!philo->is_dead && !philo_isdead(philo, table))
+		logger(table, "is thinking", philo->id);
 }
 
 void	philo_eat(t_philo *philo, t_table *table)
 {
-	logger(table, "is eating", philo->id);
-	philo->times_to_eat--;
-	millisleep(philo->eat_time);
+	if (!philo_isdead(philo, table))
+	{
+		logger(table, "is eating", philo->id);
+		if (philo->times_to_eat > 0)
+			philo->times_to_eat--;
+		philo->last_meal_time = -table->init_time + get_time_millis();
+		millisleep(philo->eat_time);
+	}
 }
 
 void	philo_choose_forks(t_philo *philo, t_table *table, int *forks)
@@ -108,33 +146,35 @@ void	philo_choose_forks(t_philo *philo, t_table *table, int *forks)
 	}
 }
 
-void	philo_take_forks(
-	t_philo *philo, t_table *table, void (*eatfun) (t_philo*, t_table*))
+void	philo_take_forks(t_philo *philo, t_table *table)
 {
 	int			forks[2];
 
 	philo_choose_forks(philo, table, forks);
-	pthread_mutex_lock(&table->cutlery_arr[forks[0]].mutex);
+	if (!philo_isdead(philo, table))
 	{
-		table->cutlery_arr[forks[0]].owned_by = philo->id;
-		logger(table, "has taken a fork", philo->id);
-		pthread_mutex_lock(&table->cutlery_arr[forks[1]].mutex);
+		pthread_mutex_lock(&table->cutlery_arr[forks[0]].mutex);
+		logger_f(table, "has taken a fork", philo->id, forks[0]);
+		while (forks[0] == forks[1] && !philo_isdead(philo, table))
+			;
+		if (!philo_isdead(philo, table))
 		{
-			logger(table, "has taken a fork", philo->id);
-			table->cutlery_arr[forks[1]].owned_by = philo->id;
-			eatfun(philo, table);
-			table->cutlery_arr[forks[1]].owned_by = 0;
+			pthread_mutex_lock(&table->cutlery_arr[forks[1]].mutex);
+			logger_f(table, "has taken a fork", philo->id, forks[1]);
+			philo_eat(philo, table);
+			pthread_mutex_unlock(&table->cutlery_arr[forks[1]].mutex);
 		}
-		pthread_mutex_unlock(&table->cutlery_arr[forks[1]].mutex);
-		table->cutlery_arr[forks[0]].owned_by = 0;
+		pthread_mutex_unlock(&table->cutlery_arr[forks[0]].mutex);
 	}
-	pthread_mutex_unlock(&table->cutlery_arr[forks[0]].mutex);
 }
 
 void	philo_sleep(t_philo *philo, t_table *table)
 {
-	logger(table, "is sleeping", philo->id);
-	millisleep(philo->sleep_time);
+	if (!philo->is_dead && !philo_isdead(philo, table))
+	{
+		logger(table, "is sleeping", philo->id);
+		millisleep(philo->sleep_time);
+	}
 }
 
 void	philo_routine(void *args)
@@ -145,29 +185,36 @@ void	philo_routine(void *args)
 	table = ((t_table **) args)[1];
 	philo = ((t_philo **) args)[0];
 	free(args);
-	while (philo->times_to_eat != 0)
+	while (!philo->is_dead && philo->times_to_eat != 0)
 	{
-		philo_take_forks(philo, table, philo_eat);
-		philo_sleep(philo, table);
-		philo_think(philo, table);
+		philo_take_forks(philo, table);
+		if (table_is_serving(table))
+			philo_sleep(philo, table);
+		else
+			break;
+		if (table_is_serving(table))
+			philo_think(philo, table);
+		else
+			break;
 	}
-	pthread_mutex_lock(&table->table_lock);
+	if (philo->times_to_eat == 0)
 	{
+		pthread_mutex_lock(&table->table_lock);
 		logger(table, "is not hungry", philo->id);
 		table->hungry_philos--;
+		pthread_mutex_unlock(&table->table_lock);
 	}
-	pthread_mutex_unlock(&table->table_lock);
 }
 
 void	philo_init(t_philo *philo, t_philo_args *args, int i, t_table *table)
 {
-	printf("philo_init %d\n", i + 1);
 	philo->id = i + 1;
 	philo->times_to_eat = args->times_to_eat;
 	philo->death_time = args->time_to_die;
 	philo->sleep_time = args->time_to_sleep;
 	philo->eat_time = args->time_to_eat;
 	philo->last_meal_time = 0;
+	philo->is_dead = 0;
 }
 
 void	philo_spawn(t_philo *philo, t_table *table)
@@ -178,13 +225,10 @@ void	philo_spawn(t_philo *philo, t_table *table)
 	arr[0] = philo;
 	arr[1] = table;
 	pthread_create(&philo->thread, 0, (void *(*)(void *)) philo_routine, arr);
-	pthread_detach(philo->thread);
 }
-
 
 void	cutlery_init(t_cutlery *cutlery, t_philo_args *args)
 {
-	cutlery->owned_by = 0;
 	pthread_mutex_init(&cutlery->mutex, 0);
 }
 
@@ -213,39 +257,43 @@ void	table_init(t_table *table, t_philo_args *args)
 		philo_init(table->philo_arr + i, args, i, table);
 }
 
-void	table_serve(t_table *table)
+int	table_is_serving(t_table *table)
 {
-	int i;
+	int	is_serving;
 
-	i = -1;
-	table->init_time = get_time_millis();
-	while (++i < table->num_philos)
-		philo_spawn(table->philo_arr + i, table);
-	while (1)
+	pthread_mutex_lock(&table->table_lock);
 	{
-		pthread_mutex_lock(&table->table_lock);
-		if (table->any_death || table->hungry_philos <= 0)
-			break ;
-		pthread_mutex_unlock(&table->table_lock);
-		usleep(1);
+		is_serving = !table->any_death && table->hungry_philos > 0;
 	}
 	pthread_mutex_unlock(&table->table_lock);
+	return (is_serving);
+}
+
+void	table_serve(t_table *table)
+{
+	int	i;
+
+	i = table->num_philos;
+	table->init_time = get_time_millis();
+	while (--i >= 0)
+		philo_spawn(table->philo_arr + i, table);
+	while (table_is_serving(table))
+		millisleep(2000);
 }
 
 void	table_clean(t_table *table)
 {
 	int	i;
 
-	pthread_mutex_lock(&table->table_lock);
-	{
-		i = -1;
-		while (++i < table->num_philos)
-			cutlery_clean(table->cutlery_arr + i);
-		free(table->philo_arr);
-		free(table->cutlery_arr);
-		pthread_mutex_destroy(&table->log_lock);
-	}
-	pthread_mutex_unlock(&table->table_lock);
+	i = -1;
+	while (++i < table->num_philos)
+		pthread_join(table->philo_arr[i].thread, 0);
+	i = -1;
+	while (++i < table->num_philos)
+		cutlery_clean(table->cutlery_arr + i);
+	free(table->philo_arr);
+	free(table->cutlery_arr);
+	pthread_mutex_destroy(&table->log_lock);
 	pthread_mutex_destroy(&table->table_lock);
 }
 
@@ -254,10 +302,10 @@ void	philo_args_init(t_philo_args *args, int argc, char *argv[])
 	(void) argc;
 	(void) argv;
 	args->num_philos = 5;
-	args->time_to_die = 1000;
-	args->time_to_eat = 100;
-	args->times_to_eat = 10;
-	args->time_to_sleep = 100;
+	args->time_to_die = 900;
+	args->time_to_eat = 200;
+	args->time_to_sleep = 200;
+	args->times_to_eat = 100;
 }
 
 int	main(int argc, char *argv[])
