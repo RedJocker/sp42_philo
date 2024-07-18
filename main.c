@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:37:36 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/18 00:45:45 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/18 07:15:23 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void	philo_think(t_philo *philo, t_table *table)
 {
 	if (!philo->is_dead && !philo_isdead(philo, table))
 		logger(table, "is thinking", philo->id);
+	usleep(2000);
 }
 
 void	philo_eat(t_philo *philo, t_table *table)
