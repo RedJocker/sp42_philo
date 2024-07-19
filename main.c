@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:37:36 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/18 14:56:22 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/18 22:28:54 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <pthread.h>
+#include "util.h"
 
 typedef struct s_philo
 {
@@ -282,7 +283,7 @@ int	table_is_serving(t_table *table)
 
 	pthread_mutex_lock(&table->table_lock);
 	{
-		is_serving = !table->any_death && table->hungry_philos > 0;
+		is_serving = (!table->any_death && table->hungry_philos > 0);
 	}
 	pthread_mutex_unlock(&table->table_lock);
 	return (is_serving);
@@ -324,15 +325,26 @@ void	table_clean(t_table *table)
 	pthread_mutex_destroy(&table->table_lock);
 }
 
-void	philo_args_init(t_philo_args *args, int argc, char *argv[])
+int	philo_args_init(t_philo_args *args, int argc, char *argv[])
 {
+	int	is_ok;
+
 	(void) argc;
 	(void) argv;
-	args->num_philos = 5;
-	args->time_to_die = 800;
-	args->time_to_eat = 200;
+	if (argc < 5 || argc > 6)
+		return (0);
+	args->num_philos = ft_atoi_strict(&is_ok, argv[1]);
+	if (!is_ok)
+		return (0);
+	args->time_to_die = ft_atoi_strict(&is_ok, argv[2]);
+	if (!is_ok)
+		return (0);
+	args->time_to_eat = ft_atoi_strict(&is_ok, argv[3]);
+	if (!is_ok)
+		return (0);
 	args->time_to_sleep = 200;
 	args->times_to_eat = 100;
+	return (1);
 }
 
 int	main(int argc, char *argv[])
@@ -340,7 +352,8 @@ int	main(int argc, char *argv[])
 	t_table			table;
 	t_philo_args	args;
 
-	philo_args_init(&args, argc, argv);
+	if (!philo_args_init(&args, argc, argv))
+		return (1);
 	table_init(&table, &args);
 	pthread_create(&table.thread, 0, (void *(*)(void *))table_serve, &table);
 	pthread_join(table.thread, 0);
