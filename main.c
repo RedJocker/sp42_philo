@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:37:36 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/18 22:28:54 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/19 01:45:16 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	philo_isdead(t_philo *philo, t_table *table)
 
 	pthread_mutex_lock(&philo->lock);
 	time = get_time_millis() - table->init_time;
-	if (philo->times_to_eat > 0
+	if (philo->times_to_eat != 0
 		&& time - philo->last_meal_time > philo->death_time)
 	{
 		pthread_mutex_lock(&table->table_lock);
@@ -128,7 +128,7 @@ void	philo_think(t_philo *philo, t_table *table)
 {
 	if (!philo_isdead(philo, table))
 		logger(table, "is thinking", philo->id);
-	usleep(1000);
+	usleep(1111);
 }
 
 void	philo_eat(t_philo *philo, t_table *table)
@@ -167,6 +167,7 @@ void	philo_take_forks(t_philo *philo, t_table *table)
 	if (!philo_isdead(philo, table))
 	{
 		pthread_mutex_lock(&table->cutlery_arr[forks[0]].mutex);
+		usleep(20);
 		if (!philo_isdead(philo, table))
 			logger_f(table, "has taken a fork", philo->id, forks[0]);
 		while (forks[0] == forks[1] && !philo_isdead(philo, table))
@@ -174,6 +175,7 @@ void	philo_take_forks(t_philo *philo, t_table *table)
 		if (!philo_isdead(philo, table))
 		{
 			pthread_mutex_lock(&table->cutlery_arr[forks[1]].mutex);
+			usleep(20);
 			if (!philo_isdead(philo, table))
 				logger_f(table, "has taken a fork", philo->id, forks[1]);
 			philo_eat(philo, table);
@@ -329,8 +331,6 @@ int	philo_args_init(t_philo_args *args, int argc, char *argv[])
 {
 	int	is_ok;
 
-	(void) argc;
-	(void) argv;
 	if (argc < 5 || argc > 6)
 		return (0);
 	args->num_philos = ft_atoi_strict(&is_ok, argv[1]);
@@ -342,8 +342,15 @@ int	philo_args_init(t_philo_args *args, int argc, char *argv[])
 	args->time_to_eat = ft_atoi_strict(&is_ok, argv[3]);
 	if (!is_ok)
 		return (0);
-	args->time_to_sleep = 200;
-	args->times_to_eat = 100;
+	args->time_to_sleep = ft_atoi_strict(&is_ok, argv[4]);
+	if (!is_ok)
+		return (0);
+	if (argc == 6)
+		args->times_to_eat = ft_atoi_strict(&is_ok, argv[5]);
+	else
+		args->times_to_eat = -1;
+	if (!is_ok)
+		return (0);
 	return (1);
 }
 

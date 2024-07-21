@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 20:14:28 by maurodri          #+#    #+#              #
-#    Updated: 2024/07/18 21:04:49 by maurodri         ###   ########.fr        #
+#    Updated: 2024/07/19 01:07:12 by maurodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ elif [[ "$2" =~ ^[dD] ]]; then
 elif [[ "$2" =~ ^[eE] ]]; then
     ARGS="4 310 200 200 100"
 else
-    ARGS="5 800 200 200"
+    ARGS="3 800 200 200"
 fi
 
 make && $VALG ./philo $ARGS

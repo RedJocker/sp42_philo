@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 21:57:48 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/18 21:58:40 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/19 01:01:01 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,4 @@
 # define UTIL_H
 
 int	ft_atoi_strict(int *out_ok, const char *str);
-
 #endif
