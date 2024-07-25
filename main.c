@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:37:36 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:44:03 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:47:41 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	main(int argc, char *argv[])
 {
 	t_table			table;
-	t_phargs	args;
+	t_phargs		args;
 
 	if (!phargs_init(&args, argc, argv))
 		return (1);

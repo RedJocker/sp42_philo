@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 00:06:34 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:20:26 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:47:21 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,3 @@ void	logger_f(t_table *table, char *message, int philo_id, int fork)
 	}
 	pthread_mutex_unlock(&table->log_lock);
 }
-
