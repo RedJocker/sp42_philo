@@ -6,14 +6,14 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:22:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/24 22:54:54 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:18:16 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "philo.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include "util.h"
 
 int	philo_isdead(t_philo *philo, t_table *table)
 {

@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:26:06 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/24 22:48:41 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:16:09 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CUTLERY_H
 
 # include <pthread.h>
+# include "phargs.h"
 
 typedef struct s_cutlery
 {

@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:15:41 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/24 22:20:40 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:12:34 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define PHILO_H
 
 # include <pthread.h>
-# include "table.h"
+# include "phargs.h"
+
+typedef struct s_table t_table;
 
 typedef struct s_philo
 {

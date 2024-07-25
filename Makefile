@@ -6,13 +6,18 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/07/18 21:25:46 by maurodri         ###   ########.fr        #
+#    Updated: 2024/07/25 00:26:01 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME := philo
-FILES := main.c \
-	ft_atoi.c
+FILES := cutlery.c \
+	ft_atoi.c \
+	main.c \
+	phargs.c \
+	philo.c \
+	table.c \
+	util.c
 
 OBJ_DIR := ./obj/
 MANDATORY_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(FILES)))

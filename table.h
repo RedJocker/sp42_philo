@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:09:47 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/24 22:27:47 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:20:25 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <pthread.h>
 # include "philo.h"
-
+# include "cutlery.h"
 
 typedef struct s_table
 {

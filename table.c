@@ -6,12 +6,14 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:24:54 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/24 22:54:54 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:27:03 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "table.h"
 #include <stdlib.h>
+#include "table.h"
+#include "util.h"
 
 void	table_init(t_table *table, t_philo_args *args)
 {
