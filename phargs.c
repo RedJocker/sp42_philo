@@ -6,14 +6,14 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:53:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:32:25 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:44:45 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "phargs.h"
 #include "util.h"
 
-int	philo_args_init(t_philo_args *args, int argc, char *argv[])
+int	phargs_init(t_phargs *args, int argc, char *argv[])
 {
 	int	is_ok;
 

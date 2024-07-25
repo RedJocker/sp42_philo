@@ -6,18 +6,19 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:37:36 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:16:36 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:44:03 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "table.h"
+#include "phargs.h"
 
 int	main(int argc, char *argv[])
 {
 	t_table			table;
-	t_philo_args	args;
+	t_phargs	args;
 
-	if (!philo_args_init(&args, argc, argv))
+	if (!phargs_init(&args, argc, argv))
 		return (1);
 	table_init(&table, &args);
 	pthread_create(&table.thread, 0, (void *(*)(void *))table_serve, &table);

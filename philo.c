@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:22:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:18:16 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:43:23 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	philo_clean(t_philo *philo)
 	pthread_mutex_destroy(&philo->lock);
 }
 
-void	philo_init(t_philo *philo, t_philo_args *args, int i, t_table *table)
+void	philo_init(t_philo *philo, t_phargs *args, int i, t_table *table)
 {
 	philo->id = i + 1;
 	philo->times_to_eat = args->times_to_eat;

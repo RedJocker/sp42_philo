@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:24:54 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:27:03 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:43:22 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "table.h"
 #include "util.h"
 
-void	table_init(t_table *table, t_philo_args *args)
+void	table_init(t_table *table, t_phargs *args)
 {
 	int	i;
 

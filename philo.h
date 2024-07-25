@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:15:41 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:12:34 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:43:24 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	philo_take_forks(t_philo *philo, t_table *table);
 void    philo_sleep(t_philo *philo, t_table *table);
 void	philo_routine(void *args);
 void    philo_clean(t_philo *philo);
-void	philo_init(t_philo *philo, t_philo_args *args, int i, t_table *table);
+void	philo_init(t_philo *philo, t_phargs *args, int i, t_table *table);
 void	philo_spawn(t_philo *philo, t_table *table);
-int		philo_args_init(t_philo_args *args, int argc, char *argv[]);
+int		philo_args_init(t_phargs *args, int argc, char *argv[]);
 
 #endif
