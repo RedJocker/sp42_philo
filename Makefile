@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/07/25 00:26:01 by maurodri         ###   ########.fr        #
+#    Updated: 2024/07/25 00:56:36 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -16,6 +16,7 @@ FILES := cutlery.c \
 	main.c \
 	phargs.c \
 	philo.c \
+	philo_routine.c \
 	table.c \
 	util.c
 

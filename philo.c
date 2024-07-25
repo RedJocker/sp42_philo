@@ -6,14 +6,27 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:22:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:43:23 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:55:03 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdlib.h>
-#include <unistd.h>
 #include "util.h"
+
+void	philo_choose_forks(t_philo *philo, t_table *table, int *forks)
+{
+	if (philo->id % 2 == 1)
+	{
+		forks[0] = (philo->id - 1 + table->num_philos) % table->num_philos;
+		forks[1] = (philo->id + table->num_philos) % table->num_philos;
+	}
+	else
+	{
+		forks[0] = (philo->id + table->num_philos) % table->num_philos;
+		forks[1] = (philo->id - 1 + table->num_philos) % table->num_philos;
+	}
+}
 
 int	philo_isdead(t_philo *philo, t_table *table)
 {
@@ -39,102 +52,6 @@ int	philo_isdead(t_philo *philo, t_table *table)
 		is_dead = 0;
 	pthread_mutex_unlock(&philo->lock);
 	return (is_dead);
-}
-
-void	philo_think(t_philo *philo, t_table *table)
-{
-	if (!philo_isdead(philo, table))
-		logger(table, "is thinking", philo->id);
-	usleep(1000);
-}
-
-void	philo_eat(t_philo *philo, t_table *table)
-{
-	if (!philo_isdead(philo, table))
-	{
-		logger(table, "is eating", philo->id);
-		pthread_mutex_lock(&philo->lock);
-		if (philo->times_to_eat > 0)
-			philo->times_to_eat--;
-		philo->last_meal_time = -table->init_time + get_time_millis();
-		pthread_mutex_unlock(&philo->lock);
-		millisleep(philo->eat_time);
-	}
-}
-
-void	philo_choose_forks(t_philo *philo, t_table *table, int *forks)
-{
-	if (philo->id % 2 == 1)
-	{
-		forks[0] = (philo->id - 1 + table->num_philos) % table->num_philos;
-		forks[1] = (philo->id + table->num_philos) % table->num_philos;
-	}
-	else
-	{
-		forks[0] = (philo->id + table->num_philos) % table->num_philos;
-		forks[1] = (philo->id - 1 + table->num_philos) % table->num_philos;
-	}
-}
-
-void	philo_take_forks(t_philo *philo, t_table *table)
-{
-	int			forks[2];
-
-	philo_choose_forks(philo, table, forks);
-	if (!philo_isdead(philo, table))
-	{
-		pthread_mutex_lock(&table->cutlery_arr[forks[0]].mutex);
-		if (!philo_isdead(philo, table))
-			logger_f(table, "has taken a fork", philo->id, forks[0]);
-		while (forks[0] == forks[1] && !philo_isdead(philo, table))
-			;
-		if (!philo_isdead(philo, table))
-		{
-			pthread_mutex_lock(&table->cutlery_arr[forks[1]].mutex);
-			if (!philo_isdead(philo, table))
-				logger_f(table, "has taken a fork", philo->id, forks[1]);
-			philo_eat(philo, table);
-			pthread_mutex_unlock(&table->cutlery_arr[forks[1]].mutex);
-		}
-		pthread_mutex_unlock(&table->cutlery_arr[forks[0]].mutex);
-	}
-}
-
-void	philo_sleep(t_philo *philo, t_table *table)
-{
-	if (!philo_isdead(philo, table))
-	{
-		logger(table, "is sleeping", philo->id);
-		millisleep(philo->sleep_time);
-	}
-}
-
-void	philo_routine(void *args)
-{
-	t_table	*table;
-	t_philo	*philo;
-
-	table = ((t_table **) args)[1];
-	philo = ((t_philo **) args)[0];
-	free(args);
-	while (!philo->is_dead && philo->times_to_eat != 0)
-	{
-		if (table_is_serving(table))
-			philo_take_forks(philo, table);
-		if (table_is_serving(table))
-			philo_sleep(philo, table);
-		if (table_is_serving(table))
-			philo_think(philo, table);
-		else
-			break ;
-	}
-	if (philo->times_to_eat == 0)
-	{
-		pthread_mutex_lock(&table->table_lock);
-		logger(table, "is not hungry", philo->id);
-		table->hungry_philos--;
-		pthread_mutex_unlock(&table->table_lock);
-	}
 }
 
 void	philo_clean(t_philo *philo)
