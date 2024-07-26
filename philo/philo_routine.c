@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 00:52:11 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:55:43 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:08:50 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void	philo_routine(void *args)
 	if (philo->times_to_eat == 0)
 	{
 		pthread_mutex_lock(&table->table_lock);
-		logger(table, "is not hungry", philo->id);
 		table->hungry_philos--;
 		pthread_mutex_unlock(&table->table_lock);
 	}

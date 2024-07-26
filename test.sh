@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 20:14:28 by maurodri          #+#    #+#              #
-#    Updated: 2024/07/19 01:07:12 by maurodri         ###   ########.fr        #
+#    Updated: 2024/07/25 23:44:13 by maurodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,4 +34,4 @@ else
     ARGS="3 800 200 200"
 fi
 
-make && $VALG ./philo $ARGS
+make && $VALG ./philo/philo $ARGS

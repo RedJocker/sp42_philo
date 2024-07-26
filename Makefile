@@ -6,11 +6,13 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/07/25 00:56:36 by maurodri         ###   ########.fr        #
+#    Updated: 2024/07/25 23:48:05 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
-NAME := philo
+MANDATORY_DIR := ./philo
+BONUS_DIR := ./philo_bonus
+
 FILES := cutlery.c \
 	ft_atoi.c \
 	main.c \
@@ -20,17 +22,30 @@ FILES := cutlery.c \
 	table.c \
 	util.c
 
+BONUS_FILES := main_bonus.c 
+
 OBJ_DIR := ./obj/
 MANDATORY_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(FILES)))
 BONUS_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(BONUS_FILES)))
 DEP_FLAGS := -MP -MD
-VPATH := ./
+VPATH := ./ $(MANDATORY_DIR) $(BONUS_DIR)
 CFLAGS := -g3 -lpthread # -Wall -Wextra -Werror 
 CC := cc
 
-INCLUDES := -I./ -I$(LIBFT_DIR)/includes
-OBJS := $(MANDATORY_OBJS)
-ETAGS_BASE := ./
+
+ifdef WITH_BONUS
+	NAME := $(BONUS_DIR)/philo_bonus
+	INCLUDES := -I./$(BONUS_DIR)
+	OBJS := $(BONUS_OBJS)
+	ETAGS_BASE := $(BONUS_DIR)
+else
+	NAME := $(MANDATORY_DIR)/philo
+	INCLUDES := -I./$(MANDATORY_DIR)
+	OBJS := $(MANDATORY_OBJS)
+	ETAGS_BASE := $(MANDATORY_DIR)
+endif
+
+DEP_FILES := $(patsubst %.o, %.d, $(OBJS))
 
 all: $(NAME)
 
@@ -44,12 +59,13 @@ $(OBJS): $(OBJ_DIR)%.o : %.c | $(OBJ_DIR)
 $(OBJ_DIR):
 	@mkdir -p $@
 
+bonus:
+	$(MAKE) WITH_BONUS=1
 
 .PHONY: all clean fclean re bonus
 
 clean:
 	rm -fr $(OBJ_DIR) **/*~ *~ **/.#*
-	$(MAKE) -C $(LIBFT_DIR) fclean
 
 fclean: clean
 	rm -f $(NAME)
