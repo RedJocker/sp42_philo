@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.h                                             :+:      :+:    :+:   */
+/*   phargs.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/18 21:57:48 by maurodri          #+#    #+#             */
-/*   Updated: 2024/11/24 18:43:23 by maurodri         ###   ########.fr       */
+/*   Created: 2024/07/24 22:50:36 by maurodri          #+#    #+#             */
+/*   Updated: 2024/07/25 00:44:35 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTIL_H
-# define UTIL_H
+#ifndef PHARGS_H
+# define PHARGS_H
 
-# include "table.h"
+typedef struct s_phargs
+{
+	int	num_philos;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	times_to_eat;
+}	t_phargs;
 
-int			ft_atoi_strict(int *out_ok, const char *str);
-long long	get_time_millis(void);
-void		millisleep(int millis);
-void		logger(t_table *table, char *message, int philo_id);
-void		logger_f(t_table *table, char *message, int philo_id, int fork);
+int	phargs_init(t_phargs *args, int argc, char *argv[]);
 
 #endif

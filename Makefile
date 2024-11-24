@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/07/25 23:48:05 by maurodri         ###   ########.fr        #
+#    Updated: 2024/11/24 18:41:59 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,7 +22,10 @@ FILES := cutlery.c \
 	table.c \
 	util.c
 
-BONUS_FILES := main_bonus.c 
+BONUS_FILES := main_bonus.c  \
+	ft_atoi.c \
+	phargs.c \
+	util.c
 
 OBJ_DIR := ./obj/
 MANDATORY_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(FILES)))
