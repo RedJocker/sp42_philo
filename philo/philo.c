@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:22:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:55:03 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/02 19:32:33 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	philo_isdead(t_philo *philo, t_table *table)
 
 	pthread_mutex_lock(&philo->lock);
 	time = get_time_millis() - table->init_time;
-	if (philo->times_to_eat > 0
+	if (philo->times_to_eat != 0
 		&& time - philo->last_meal_time > philo->death_time)
 	{
 		pthread_mutex_lock(&table->table_lock);
