@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 07:42:35 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 08:24:34 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ void	philo_init(t_philo *philo, t_phargs *args, int id, long long time_init)
 	philo->sleep_time = args->time_to_sleep;
 	philo->eat_time = args->time_to_eat;
 	philo->death_time = args->time_to_die;
+	philo->think_time = args->time_to_die - args->time_to_eat \
+		- args->time_to_sleep - 5;
+	if (philo->think_time < 0)
+		philo->think_time = 0;
 	id_str = ft_itoa(id);
 	id_str_len = ft_strlen(id_str);
 	philo->philo_lock_name = malloc(6 + id_str_len + 1);
@@ -137,7 +141,7 @@ int		philo_sit_table(t_table *table, t_phargs *args, int id)
 	while (1)
 	{
 		millisleep(10);
-		if (philo_isdead(&philo,  table) || philo_has_to_leave(&philo, table))
+		if (philo_is_dead(&philo,  table) || philo_has_to_leave(&philo, table))
 		{
 			printf("philo_sit_table exit 1: %d\n", id);
 			exit_code = 1;
@@ -151,5 +155,6 @@ int		philo_sit_table(t_table *table, t_phargs *args, int id)
 		}
 	}
 	philo_clean(&philo);
+	printf("exit_code: %d\n", exit_code);
 	return (exit_code);
 }

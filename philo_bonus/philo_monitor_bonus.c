@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:37:44 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 05:36:24 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 08:09:22 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 #include <semaphore.h>
 #include <stdio.h>
 
-int	philo_isdead(t_philo *philo, t_table *table)
+int	philo_is_dead(t_philo *philo, t_table *table)
 {
 	long long	time;
 	int			is_dead;
 
 	sem_wait(philo->philo_lock);
 	time = get_time_millis();
+	//printf("is_dead: id: %d time: %lld, last_meal: %lld, - %lld\n",	\
+	//	   philo->id, time, philo->last_meal_time, time - philo->last_meal_time);
 	if (philo->times_to_eat != 0
 		&& time - philo->last_meal_time > philo->death_time)
 	{

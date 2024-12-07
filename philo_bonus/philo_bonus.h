@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:30:59 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 06:30:00 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 08:13:26 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_philo
 	int				sleep_time;
 	int				eat_time;
 	int				death_time;
+	int				think_time;
 	char			*philo_lock_name;
 	sem_t			*philo_lock;
 	int				is_dead;
@@ -40,7 +41,7 @@ void		philo_with_seat_do(
 				void (*action) (t_philo*, t_table*),
 				t_philo *philo,
 				t_table *table);
-int			philo_isdead(t_philo *philo, t_table *table);
+int			philo_is_dead(t_philo *philo, t_table *table);
 long long	philo_sit_down(t_philo *philo);
 int			philo_has_to_leave(t_philo *philo, t_table *table);
 

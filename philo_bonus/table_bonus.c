@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:17:41 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 07:33:16 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 08:23:16 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,16 @@ int	wait_meal_is_over(t_table *table, int number_of_philos)
 	while (++i < number_of_philos)
 	{
 		waitpid(-1, &status, 0);
+		printf("after waitpid %d %d\n", i, WEXITSTATUS(status));
 		if (!is_meal_over && WEXITSTATUS(status) != EXIT_SUCCESS)
 		{
+			sem_getvalue(table->log_lock, &i);
 			is_meal_over = 1;
 			j = -1;
+			printf("meal_over: log_lock %d\n", i);
 			sem_wait(table->log_lock);
+			sem_getvalue(table->log_lock, &i);
+			printf("meal_over: log_locked %d\n", i);
 			while (++j < number_of_philos)
 				sem_wait(table->seat_lock);
 		}
