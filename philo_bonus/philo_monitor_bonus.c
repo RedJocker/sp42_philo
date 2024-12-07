@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:37:44 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 10:13:11 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:16:46 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	philo_is_dead(t_philo *philo, t_table *table)
 
 	sem_wait(philo->philo_lock);
 	time = get_time_millis();
-	//printf("is_dead: id: %d time: %lld, last_meal: %lld, - %lld\n",	\
-	//	   philo->id, time, philo->last_meal_time, time - philo->last_meal_time);
 	if (philo->times_to_eat != 0
 		&& time - philo->last_meal_time > philo->death_time)
 	{

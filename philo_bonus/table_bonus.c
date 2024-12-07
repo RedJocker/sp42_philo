@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:17:41 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 08:23:16 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:16:20 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	table_init(t_table *table, t_phargs *args)
 	sem_unlink("/seat_lock");
 	table->cutlery_sem = sem_open( \
 		"/cutlery_sem", O_CREAT | O_EXCL, 0777, args->num_philos);
-	printf("num_philos: %d\n", args->num_philos);
 	table->seat_lock = sem_open(								\
 		"/seat_lock", O_CREAT | O_EXCL, 0777, args->num_philos);
 	table->log_lock = sem_open("/log_lock", O_CREAT | O_EXCL, 0777, 1);
@@ -42,7 +41,6 @@ void	table_clean(t_table *table)
 	sem_unlink("/cutlery_sem");
 	sem_unlink("/log_lock");
 	sem_unlink("/seat_lock");
-	printf("table_clean\n");
 }
 
 static int	table_receive_philos(t_table *table, int number_of_philos)
@@ -72,22 +70,15 @@ int	wait_meal_is_over(t_table *table, int number_of_philos)
 	while (++i < number_of_philos)
 	{
 		waitpid(-1, &status, 0);
-		printf("after waitpid %d %d\n", i, WEXITSTATUS(status));
 		if (!is_meal_over && WEXITSTATUS(status) != EXIT_SUCCESS)
 		{
 			log_death(table, WEXITSTATUS(status));
-			sem_getvalue(table->log_lock, &i);
 			is_meal_over = 1;
 			j = -1;
-			printf("meal_over: log_lock value %d\n", i);
 			while (++j < number_of_philos)
 			{
-				sem_getvalue(table->seat_lock, &i);
-				printf("meal_over: seat_lock value %d\n", i);
 				sem_wait(table->seat_lock);
 			}
-			sem_getvalue(table->seat_lock, &i);
-			printf("meal_over finish: seat_lock value %d\n", i);
 		}
 	}
 	return (0);

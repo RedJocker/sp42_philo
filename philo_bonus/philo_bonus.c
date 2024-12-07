@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 10:50:44 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:08:42 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,6 @@ void	philo_with_seat_do(
 	sem_post(philo->philo_lock);
 	if (should_leave)
 		return;
-	sem_getvalue(table->seat_lock, &num_locks);
-	printf("seat_lock id:%d num_locks %d\n", philo->id, num_locks);
 	sem_wait(table->seat_lock);
 	{
 		sem_wait(philo->philo_lock);
@@ -95,11 +93,8 @@ void	philo_with_seat_do(
 			philo->lock_time = LLONG_MAX;
 		}
 		sem_post(philo->philo_lock);
-		sem_getvalue(table->seat_lock, &num_locks);
-		printf("seat_locked id:%d num_locks %d\n", philo->id, num_locks);
 	}
 	sem_post(table->seat_lock);
-	printf("seat_unlock %d\n", philo->id);
 	action(philo, table);
 }
 
@@ -114,11 +109,8 @@ int philo_has_to_leave(t_philo *philo, t_table *table)
 		time = get_time_millis();
 		time_locked = time - philo->lock_time;
 		has_to_leave = time_locked > 50 || philo->is_dead;
-		printf("philo_has_to_leave %d time_locked %lld\n", philo->id, time_locked);
 	}
 	sem_post(philo->philo_lock);
-	if (has_to_leave)
-		printf("has_to_leave %d\n", philo->id);
 	return (has_to_leave);
 }
 
@@ -146,18 +138,15 @@ int		philo_sit_table(t_table *table, t_phargs *args, int id)
 		millisleep(5);
 		if (philo_has_to_leave(&philo, table) || philo_is_dead(&philo,  table))
 		{
-			printf("philo_sit_table exit 1: %d\n", id);
 			exit_code = id;
 			break ;
 		}
 		if (philo_has_finished(&philo, table))
 		{
-			printf("philo_sit_table exit 0: %d\n", id);
 			exit_code = 0;
 			break ;
 		}
 	}
 	philo_clean(&philo);
-	printf("exit_code: %d\n", exit_code);
 	return (exit_code);
 }

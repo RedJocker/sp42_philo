@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:31:05 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 10:47:31 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:05:40 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	logger(t_table *table, char *message, t_philo *philo)
 	{
 		time = get_time_millis();
 		philo->lock_time = time;
-		printf("log_lock %d\n", philo->id);
 		sem_wait(table->log_lock);
 		{
 			philo->lock_time = LLONG_MAX;
@@ -61,7 +60,6 @@ void	logger(t_table *table, char *message, t_philo *philo)
 			printf("%lld %d %s\n", uptime, philo->id, message);
 		}
 		sem_post(table->log_lock);
-		printf("log_unlock %d\n", philo->id);
 	}
 	sem_post(philo->philo_lock);
 }

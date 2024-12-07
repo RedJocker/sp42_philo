@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 23:46:59 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 08:25:12 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:17:14 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,10 @@ int	main(int argc, char *argv[])
 	t_table			table;
 	int				exit_status;
 
-	printf("START\n");
 	if (!phargs_init(&args, argc, argv))
 		return (42);
 	table_init(&table, &args);
 	exit_status = table_serve(&table, &args);
 	table_clean(&table);
-	printf("END\n");
 	return (exit_status);
 }
