@@ -6,12 +6,12 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:30:59 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 08:13:26 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:31:16 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <pthread.h>
 # include <semaphore.h>

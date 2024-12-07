@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:17:41 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:16:20 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:33:14 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	table_init(t_table *table, t_phargs *args)
 	sem_unlink("/cutlery_sem");
 	sem_unlink("/log_lock");
 	sem_unlink("/seat_lock");
-	table->cutlery_sem = sem_open( \
+	table->cutlery_sem = sem_open(\
 		"/cutlery_sem", O_CREAT | O_EXCL, 0777, args->num_philos);
-	table->seat_lock = sem_open(								\
+	table->seat_lock = sem_open(\
 		"/seat_lock", O_CREAT | O_EXCL, 0777, args->num_philos);
 	table->log_lock = sem_open("/log_lock", O_CREAT | O_EXCL, 0777, 1);
 	table->init_time = get_time_millis();
@@ -47,6 +47,7 @@ static int	table_receive_philos(t_table *table, int number_of_philos)
 {
 	int		i;
 	pid_t	pid;
+
 	i = -1;
 	while (++i < number_of_philos)
 	{

@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:08:42 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:32:12 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 void	philo_init(t_philo *philo, t_phargs *args, int id, long long time_init)
 {
 	char	*id_str;
-	int		id_str_len;;
+	int		id_str_len;
 
 	philo->id = id;
 	philo->sleep_time = args->time_to_sleep;
@@ -74,7 +74,7 @@ void	philo_with_seat_do(
 	void (*action) (t_philo*, t_table*), t_philo *philo, t_table *table)
 {
 	int	should_leave;
-	int num_locks;
+	int	num_locks;
 
 	should_leave = 0;
 	sem_wait(philo->philo_lock);
@@ -85,7 +85,7 @@ void	philo_with_seat_do(
 	}
 	sem_post(philo->philo_lock);
 	if (should_leave)
-		return;
+		return ;
 	sem_wait(table->seat_lock);
 	{
 		sem_wait(philo->philo_lock);
@@ -98,7 +98,7 @@ void	philo_with_seat_do(
 	action(philo, table);
 }
 
-int philo_has_to_leave(t_philo *philo, t_table *table)
+int	philo_has_to_leave(t_philo *philo, t_table *table)
 {
 	long long	time;
 	long long	time_locked;
@@ -136,7 +136,7 @@ int		philo_sit_table(t_table *table, t_phargs *args, int id)
 	while (1)
 	{
 		millisleep(5);
-		if (philo_has_to_leave(&philo, table) || philo_is_dead(&philo,  table))
+		if (philo_has_to_leave(&philo, table) || philo_is_dead(&philo, table))
 		{
 			exit_code = id;
 			break ;

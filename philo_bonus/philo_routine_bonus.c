@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:19:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:16:56 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:30:59 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	philo_eat(t_philo *philo, t_table *table)
 
 static void	philo_take_forks(t_philo *philo, t_table *table)
 {
-	int has_finished_eating;
+	int	has_finished_eating;
 
 	sem_wait(philo->philo_lock);
 	{

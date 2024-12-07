@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:31:05 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:05:40 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:32:22 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	logger(t_table *table, char *message, t_philo *philo)
 	sem_post(philo->philo_lock);
 }
 
-
 void	log_death(t_table *table, int philo_id)
 {
 	long long	uptime;
@@ -77,7 +76,6 @@ void	log_death(t_table *table, int philo_id)
 		printf("%lld %d died\n", uptime, philo_id);
 	}
 }
-
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {

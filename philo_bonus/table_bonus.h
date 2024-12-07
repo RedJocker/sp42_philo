@@ -6,12 +6,12 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:31:04 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 03:44:57 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:30:45 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TABLE_H
-# define TABLE_H
+#ifndef TABLE_BONUS_H
+# define TABLE_BONUS_H
 
 # include <pthread.h>
 # include <unistd.h>

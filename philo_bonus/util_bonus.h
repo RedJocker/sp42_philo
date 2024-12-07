@@ -6,12 +6,12 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:31:06 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 09:50:02 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:34:29 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTIL_H
-# define UTIL_H
+#ifndef UTIL_BONUS_H
+# define UTIL_BONUS_H
 
 # include <stdlib.h>
 # include "philo_bonus.h"
