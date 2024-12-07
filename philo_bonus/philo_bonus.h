@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:30:59 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:31:16 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:43:11 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_philo
 	long long		last_meal_time;
 	long long		lock_time;
 	int				times_to_eat;
-	int				has_finished_eating;
 	pthread_t		routine;
 }	t_philo;
 
@@ -44,5 +43,6 @@ void		philo_with_seat_do(
 int			philo_is_dead(t_philo *philo, t_table *table);
 long long	philo_sit_down(t_philo *philo);
 int			philo_has_to_leave(t_philo *philo, t_table *table);
+int			philo_has_finished(t_philo *philo, t_table *table);
 
 #endif

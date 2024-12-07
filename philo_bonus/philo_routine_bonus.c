@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:19:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:30:59 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:43:34 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,7 @@ static void	philo_take_forks(t_philo *philo, t_table *table)
 {
 	int	has_finished_eating;
 
-	sem_wait(philo->philo_lock);
-	{
-		has_finished_eating = philo->has_finished_eating;
-	}
-	sem_post(philo->philo_lock);
+	has_finished_eating = philo_has_finished(philo, table);
 	if (!philo_is_dead(philo, table) && !has_finished_eating)
 	{
 		sem_wait(table->cutlery_sem);
@@ -67,7 +63,6 @@ static void	philo_take_forks(t_philo *philo, t_table *table)
 	{
 		if (philo->times_to_eat > 0)
 			philo->times_to_eat--;
-		philo->has_finished_eating = philo->times_to_eat == 0;
 	}
 	sem_post(philo->philo_lock);
 }

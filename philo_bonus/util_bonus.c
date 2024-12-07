@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:31:05 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:32:22 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 12:00:37 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,39 +42,6 @@ size_t	ft_strlen(const char *str)
 	while (*str++)
 		len++;
 	return (len);
-}
-
-void	logger(t_table *table, char *message, t_philo *philo)
-{
-	long long	uptime;
-	long long	time;
-
-	sem_wait(philo->philo_lock);
-	{
-		time = get_time_millis();
-		philo->lock_time = time;
-		sem_wait(table->log_lock);
-		{
-			philo->lock_time = LLONG_MAX;
-			uptime = time - table->init_time;
-			printf("%lld %d %s\n", uptime, philo->id, message);
-		}
-		sem_post(table->log_lock);
-	}
-	sem_post(philo->philo_lock);
-}
-
-void	log_death(t_table *table, int philo_id)
-{
-	long long	uptime;
-	long long	time;
-
-	time = get_time_millis();
-	sem_wait(table->log_lock);
-	{
-		uptime = time - table->init_time;
-		printf("%lld %d died\n", uptime, philo_id);
-	}
 }
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
