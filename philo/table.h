@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:09:47 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:43:20 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/06 22:11:25 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_table
 
 int		table_is_serving(t_table *table);
 void	table_init(t_table *table, t_phargs *args);
-int		table_is_serving(t_table *table);
 void	table_serve(t_table *table);
 void	table_clean(t_table *table);
 

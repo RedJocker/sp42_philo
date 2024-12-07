@@ -1,0 +1,7 @@
+-I
+./philo
+-I
+./philo_bonus
+-I
+./lib/libftx/includes
+
