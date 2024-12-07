@@ -30,9 +30,11 @@ void	philo_init(t_philo *philo, t_phargs *args, int id, long long time_init)
 	philo->eat_time = args->time_to_eat;
 	philo->death_time = args->time_to_die;
 	philo->think_time = args->time_to_die - args->time_to_eat \
-		- args->time_to_sleep - 7;
+		- args->time_to_sleep - 8;
 	if (philo->think_time < 0)
 		philo->think_time = 0;
+	else if (philo->think_time > 100)
+		philo->think_time = 100;
 	id_str = ft_itoa(id);
 	id_str_len = ft_strlen(id_str);
 	philo->philo_lock_name = malloc(6 + id_str_len + 1);
