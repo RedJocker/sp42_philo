@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:31:04 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:30:45 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 16:29:28 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,13 @@ typedef struct s_table
 	sem_t			*cutlery_sem;
 	long long		init_time;
 	sem_t			*log_lock;
+	sem_t			*death_lock;
 	sem_t			*seat_lock;
+	pid_t			*philo_pids;
+	int				philo_pids_len;
+	int				should_log;
+	int				exit_code;
+	long long		time_of_death;
 }	t_table;
 
 void	table_init(t_table *table, t_phargs *args);

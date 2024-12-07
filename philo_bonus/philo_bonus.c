@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:59:37 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 16:22:05 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,17 @@ void	philo_clean(t_philo *philo)
 void	philo_start_dinning(t_philo *philo, t_table *table)
 {
 	void	**arr;
+	void	**arr2;
 
 	arr = malloc(2 * sizeof(void *));
 	arr[0] = philo;
 	arr[1] = table;
+	arr2 = malloc(2 * sizeof(void *));
+	arr2[0] = philo;
+	arr2[1] = table;
 	pthread_create(&philo->routine, 0, (void *(*)(void *)) philo_routine, arr);
-	pthread_detach(philo->routine);
+	pthread_create(&philo->monitoring, 0,\
+		(void *(*)(void *)) philo_monitor, arr2);
 }
 
 void	philo_with_seat_do(
@@ -88,34 +93,26 @@ void	philo_with_seat_do(
 		sem_wait(philo->philo_lock);
 		{
 			philo->lock_time = LLONG_MAX;
+			should_leave = philo->is_dead || philo->times_to_eat == 0;
 		}
 		sem_post(philo->philo_lock);
 	}
 	sem_post(table->seat_lock);
+	if (should_leave)
+		return ;
 	action(philo, table);
 }
 
 int	philo_sit_table(t_table *table, t_phargs *args, int id)
 {
-	t_philo	philo;
-	int		exit_code;
+	t_philo philo;
 
 	philo_init(&philo, args, id, table->init_time);
 	philo_start_dinning(&philo, table);
-	while (1)
-	{
-		millisleep(5);
-		if (philo_has_to_leave(&philo, table) || philo_is_dead(&philo, table))
-		{
-			exit_code = id;
-			break ;
-		}
-		if (philo_has_finished(&philo, table))
-		{
-			exit_code = 0;
-			break ;
-		}
-	}
+	pthread_join(philo.monitoring, 0);
+	if (philo.is_dead)
+		log_death(table, id);
+	pthread_join(philo.routine, 0);
 	philo_clean(&philo);
-	return (exit_code);
+	return (table->exit_code);
 }

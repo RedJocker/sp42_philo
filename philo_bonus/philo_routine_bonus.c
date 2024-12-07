@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:19:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:43:34 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 16:36:25 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,21 @@ void	philo_routine(void *args)
 	table = ((t_table **) args)[1];
 	philo = ((t_philo **) args)[0];
 	free(args);
+	millisleep((philo->id % 2 == 0) * 5);
+	if (table->philo_pids_len == 1)
+	{
+		sem_wait(table->cutlery_sem);
+		logger(table, "has taken a fork", philo);
+		return ;
+	}
 	while (!philo->is_dead && philo->times_to_eat != 0)
 	{
 		philo_with_seat_do(philo_take_forks, philo, table);
 		philo_with_seat_do(philo_sleep, philo, table);
 		philo_with_seat_do(philo_think, philo, table);
 	}
+	if (philo->is_dead)
+		table->exit_code = philo->id;
+	else
+		table->exit_code = 0;
 }
