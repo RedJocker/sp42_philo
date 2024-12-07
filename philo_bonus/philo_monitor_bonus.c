@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:37:44 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 08:09:22 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 10:13:11 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,5 @@ int	philo_is_dead(t_philo *philo, t_table *table)
 	else
 		is_dead = 0;
 	sem_post(philo->philo_lock);
-	if (is_dead)
-		logger(table, "died", philo);
 	return (is_dead);
 }

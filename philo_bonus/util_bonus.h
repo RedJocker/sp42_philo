@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:31:06 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 03:22:20 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 09:50:02 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void		millisleep(int millis);
 char		*ft_itoa(int n);
 size_t		ft_strlen(const char *str);
 void		logger(t_table *table, char *message, t_philo *philo);
+void		log_death(t_table *table, int philo_id);
 void		*ft_memcpy(void *dst, const void *src, size_t n);
 
 #endif

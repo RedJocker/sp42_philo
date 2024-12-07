@@ -54,7 +54,7 @@ static int	table_receive_philos(t_table *table, int number_of_philos)
 	{
 		pid = fork();
 		if (pid == 0)
-			return (i);
+			return (i + 1);
 	}
 	return (-1);
 }
@@ -75,15 +75,19 @@ int	wait_meal_is_over(t_table *table, int number_of_philos)
 		printf("after waitpid %d %d\n", i, WEXITSTATUS(status));
 		if (!is_meal_over && WEXITSTATUS(status) != EXIT_SUCCESS)
 		{
+			log_death(table, WEXITSTATUS(status));
 			sem_getvalue(table->log_lock, &i);
 			is_meal_over = 1;
 			j = -1;
-			printf("meal_over: log_lock %d\n", i);
-			sem_wait(table->log_lock);
-			sem_getvalue(table->log_lock, &i);
-			printf("meal_over: log_locked %d\n", i);
+			printf("meal_over: log_lock value %d\n", i);
 			while (++j < number_of_philos)
+			{
+				sem_getvalue(table->seat_lock, &i);
+				printf("meal_over: seat_lock value %d\n", i);
 				sem_wait(table->seat_lock);
+			}
+			sem_getvalue(table->seat_lock, &i);
+			printf("meal_over finish: seat_lock value %d\n", i);
 		}
 	}
 	return (0);

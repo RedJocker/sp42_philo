@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:19:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 08:13:01 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/07 10:33:58 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	philo_think(t_philo *philo, t_table *table)
 	if (!philo_is_dead(philo, table))
 		logger(table, "is thinking", philo);
 	millisleep(philo->think_time);
+	printf("done thinking %d, %d\n", philo->id, philo->think_time);
 }
 
 static void	philo_eat(t_philo *philo, t_table *table)
