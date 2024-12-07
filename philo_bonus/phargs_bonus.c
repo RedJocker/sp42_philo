@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phargs.c                                           :+:      :+:    :+:   */
+/*   phargs_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
+/*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/24 22:53:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 00:44:45 by maurodri         ###   ########.fr       */
+/*   Created: 2024/12/06 22:19:17 by maurodri          #+#    #+#             */
+/*   Updated: 2024/12/06 22:19:26 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "phargs.h"
-#include "util.h"
+#include "phargs_bonus.h"
+#include "util_bonus.h"
 
 int	phargs_init(t_phargs *args, int argc, char *argv[])
 {

@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/11/24 18:41:59 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/07 03:49:17 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,10 +22,15 @@ FILES := cutlery.c \
 	table.c \
 	util.c
 
-BONUS_FILES := main_bonus.c  \
-	ft_atoi.c \
-	phargs.c \
-	util.c
+BONUS_FILES := main_bonus.c \
+		ft_atoi_bonus.c \
+		ft_itoa_bonus.c \
+		philo_routine_bonus.c \
+		philo_monitor_bonus.c \
+		philo_bonus.c \
+		util_bonus.c \
+		phargs_bonus.c \
+		table_bonus.c 
 
 OBJ_DIR := ./obj/
 MANDATORY_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(FILES)))
@@ -54,7 +59,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $^ $(INCLUDES) -o $@
-	etags $$(find $(ETAGS_BASE) -name '*.[ch]') $$(find $(LIBFT_DIR) -name '*.[ch]') --include '~/glibc/TAGS'
+	etags $$(find $(ETAGS_BASE) -name '*.[ch]') --include '~/glibc/TAGS'
 
 $(OBJS): $(OBJ_DIR)%.o : %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(DEP_FLAGS) -o $@ -c $< $(INCLUDES) 

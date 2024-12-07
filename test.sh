@@ -6,13 +6,16 @@
 #    By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 20:14:28 by maurodri          #+#    #+#              #
-#    Updated: 2024/11/24 18:34:42 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/07 05:22:17 by maurodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 set -x
+set -e
 
-if [[ "$1" =~ ^[Ll] ]]; then
+echo "::ARGUMENTS::"
+echo -e "\n::$1 = first arg:(l=leak-check|t=tool-helgrind|*='')::"
+if [[ "$1" =~ ^[Ll] ]]; then    
     VALG="valgrind --leak-check=full "
 elif [[ "$1" =~ ^[Tt] ]]; then
     VALG="valgrind --tool=helgrind "
@@ -20,6 +23,7 @@ else
     VALG=" "
 fi
 
+echo -e "\n::$2 = second arg:(a=caseA|b=caseB|c=caseC|d=caseD|e=caseE|*=caseDefault)::"
 if [[ "$2" =~ ^[aA] ]]; then
     ARGS="1 800 200 200"
 elif [[ "$2" =~ ^[bB] ]]; then
@@ -31,8 +35,17 @@ elif [[ "$2" =~ ^[dD] ]]; then
 elif [[ "$2" =~ ^[eE] ]]; then
     ARGS="4 310 200 200 100"
 else
-    ARGS="3 800 200 200"
+    #ARGS="3 800 200 200"
+    #ARGS="5 820 200 200 100"
+    ARGS="4 420 200 200 100"
 fi
 
-##make && $VALG ./philo/philo $ARGS
-make bonus && $VALG ./philo_bonus/philo_bonus $ARGS
+echo -e "\n::BUILDING::"
+##make
+make bonus
+
+echo -e "\n::RUNNING::"
+#$VALG ./philo/philo $ARGS
+$VALG ./philo_bonus/philo_bonus $ARGS
+
+echo '::END::'
