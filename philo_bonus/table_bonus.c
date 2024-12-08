@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:17:41 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 16:30:14 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/08 03:16:32 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	table_init(t_table *table, t_phargs *args)
 	table->death_lock = sem_open("/death_lock", O_CREAT | O_EXCL, 0777, 1);
 	table->philo_pids = malloc(args->num_philos * sizeof(pid_t));
 	table->philo_pids_len = args->num_philos;
-	table->should_log = 1;
 	table->time_of_death = 0;
 	table->init_time = get_time_millis();
 }

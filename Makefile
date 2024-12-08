@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/12/07 03:49:17 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/08 03:21:38 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -28,6 +28,7 @@ BONUS_FILES := main_bonus.c \
 		philo_routine_bonus.c \
 		philo_monitor_bonus.c \
 		philo_bonus.c \
+		philo_logger.c \
 		util_bonus.c \
 		phargs_bonus.c \
 		table_bonus.c 

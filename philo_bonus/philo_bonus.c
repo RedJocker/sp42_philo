@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 16:22:05 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/08 03:31:59 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	philo_init(t_philo *p, t_phargs *args, int id, long long time_init)
 	p->philo_lock = sem_open(\
 		p->philo_lock_name, O_CREAT | O_EXCL, 0777, 1);
 	p->is_dead = 0;
+	p->should_log = 1;
 	p->last_meal_time = time_init;
 	p->lock_time = LLONG_MAX;
 	p->times_to_eat = args->times_to_eat;
@@ -68,7 +69,7 @@ void	philo_start_dinning(t_philo *philo, t_table *table)
 	arr2[0] = philo;
 	arr2[1] = table;
 	pthread_create(&philo->routine, 0, (void *(*)(void *)) philo_routine, arr);
-	pthread_create(&philo->monitoring, 0,\
+	pthread_create(&philo->monitoring, 0, \
 		(void *(*)(void *)) philo_monitor, arr2);
 }
 
@@ -105,7 +106,7 @@ void	philo_with_seat_do(
 
 int	philo_sit_table(t_table *table, t_phargs *args, int id)
 {
-	t_philo philo;
+	t_philo	philo;
 
 	philo_init(&philo, args, id, table->init_time);
 	philo_start_dinning(&philo, table);

@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:31:04 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 16:29:28 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/08 03:12:23 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct s_table
 	sem_t			*seat_lock;
 	pid_t			*philo_pids;
 	int				philo_pids_len;
-	int				should_log;
 	int				exit_code;
 	long long		time_of_death;
 }	t_table;

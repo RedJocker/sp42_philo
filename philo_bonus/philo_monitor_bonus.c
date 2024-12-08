@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:37:44 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 16:21:39 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/08 03:15:38 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	philo_is_dead(t_philo *philo, t_table *table)
 		philo->is_dead = 1;
 		is_dead = 1;
 		table->time_of_death = time - table->init_time;
-		table->should_log = 0;
+		philo->should_log = 0;
 		sem_wait(table->log_lock);
 	}
 	else
@@ -64,35 +64,6 @@ int	philo_has_finished(t_philo *philo, t_table *table)
 	}
 	sem_post(philo->philo_lock);
 	return (has_finished);
-}
-
-void	log_death(t_table *table, int philo_id)
-{
-	sem_wait(table->death_lock);
-	printf("%lld %d died\n", table->time_of_death, philo_id);
-}
-
-void	logger(t_table *table, char *message, t_philo *philo)
-{
-	long long	uptime;
-	long long	time;
-
-	sem_wait(philo->philo_lock);
-	{
-		if (!table->should_log)
-			return (void) (sem_post(philo->philo_lock));
-		time = get_time_millis();
-		philo->lock_time = time;
-		sem_wait(table->log_lock);
-		{
-			philo->lock_time = LLONG_MAX;
-			uptime = time - table->init_time;
-			printf("%lld %d %s\n", uptime, philo->id, message);
-		}
-		if (!philo->is_dead)
-			sem_post(table->log_lock);
-	}
-	sem_post(philo->philo_lock);
 }
 
 void	*philo_monitor(void *args)
