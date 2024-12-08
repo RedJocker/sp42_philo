@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:17:41 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/08 03:16:32 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/08 03:41:44 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,9 @@ void	table_init(t_table *table, t_phargs *args)
 {
 	sem_unlink("/cutlery_sem");
 	sem_unlink("/log_lock");
-	sem_unlink("/seat_lock");
 	sem_unlink("/death_lock");
 	table->cutlery_sem = sem_open(\
 		"/cutlery_sem", O_CREAT | O_EXCL, 0777, args->num_philos);
-	table->seat_lock = sem_open(\
-		"/seat_lock", O_CREAT | O_EXCL, 0777, args->num_philos);
 	table->log_lock = sem_open("/log_lock", O_CREAT | O_EXCL, 0777, 1);
 	table->death_lock = sem_open("/death_lock", O_CREAT | O_EXCL, 0777, 1);
 	table->philo_pids = malloc(args->num_philos * sizeof(pid_t));
@@ -42,11 +39,9 @@ void	table_clean(t_table *table)
 {
 	sem_close(table->cutlery_sem);
 	sem_close(table->log_lock);
-	sem_close(table->seat_lock);
 	sem_close(table->death_lock);
 	sem_unlink("/cutlery_sem");
 	sem_unlink("/log_lock");
-	sem_unlink("/seat_lock");
 	sem_unlink("/death_lock");
 	free(table->philo_pids);
 }

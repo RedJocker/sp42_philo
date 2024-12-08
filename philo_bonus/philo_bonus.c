@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/08 03:31:59 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/08 06:41:02 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	philo_init(t_philo *p, t_phargs *args, int id, long long time_init)
 	p->eat_time = args->time_to_eat;
 	p->death_time = args->time_to_die;
 	p->think_time = args->time_to_die - args->time_to_eat \
-		- args->time_to_sleep - 9;
-	p->think_time = (p->think_time <= 0) * 0 + (p->think_time >= 100) * 100 \
+		- args->time_to_sleep - 20;
+	p->think_time = (p->think_time <= 10) * 0 + (p->think_time >= 100) * 31 \
 		+ (p->think_time > 0 && p->think_time < 100) * p->think_time;
 	id_str = ft_itoa(id);
 	id_str_len = ft_strlen(id_str);
@@ -89,16 +89,12 @@ void	philo_with_seat_do(
 	sem_post(philo->philo_lock);
 	if (should_leave)
 		return ;
-	sem_wait(table->seat_lock);
+	sem_wait(philo->philo_lock);
 	{
-		sem_wait(philo->philo_lock);
-		{
-			philo->lock_time = LLONG_MAX;
-			should_leave = philo->is_dead || philo->times_to_eat == 0;
-		}
-		sem_post(philo->philo_lock);
+		philo->lock_time = LLONG_MAX;
+		should_leave = philo->is_dead || philo->times_to_eat == 0;
 	}
-	sem_post(table->seat_lock);
+	sem_post(philo->philo_lock);
 	if (should_leave)
 		return ;
 	action(philo, table);
