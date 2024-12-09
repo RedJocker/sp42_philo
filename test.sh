@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 20:14:28 by maurodri          #+#    #+#              #
-#    Updated: 2024/12/08 06:12:03 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/09 09:54:39 by maurodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ fi
 
 echo -e "\n::BUILDING::"
 ##make
-make bonus
+make -C ./philo_bonus 
 
 echo -e "\n::RUNNING::"
 #$VALG ./philo/philo $ARGS
