@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:30:59 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/08 03:29:26 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 04:05:26 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_philo
 	int				is_dead;
 	int				should_log;
 	long long		last_meal_time;
-	long long		lock_time;
 	int				times_to_eat;
 	pthread_t		routine;
 	pthread_t		monitoring;
@@ -44,7 +43,6 @@ void		philo_with_seat_do(
 				t_table *table);
 int			philo_is_dead(t_philo *philo, t_table *table);
 long long	philo_sit_down(t_philo *philo);
-int			philo_has_to_leave(t_philo *philo, t_table *table);
 int			philo_has_finished(t_philo *philo, t_table *table);
 void		*philo_monitor(void *args);
 void		philo_logger(t_table *table, char *message, t_philo *philo);

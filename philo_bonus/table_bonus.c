@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:17:41 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 03:53:48 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 04:27:09 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	table_init(t_table *table, t_phargs *args)
 	table->cutlery_sem = ft_sem_open("/cutlery_sem", args->num_philos);
 	table->log_lock = ft_sem_open("/log_lock", 1);
 	table->death_lock = ft_sem_open("/death_lock", 1);
+	table->exit_lock = ft_sem_open("/exit_lock", 1);
 	table->philo_pids = malloc(args->num_philos * sizeof(pid_t));
 	table->philo_pids_len = args->num_philos;
 	table->time_of_death = 0;
@@ -36,9 +37,11 @@ void	table_clean(t_table *table)
 	sem_close(table->cutlery_sem);
 	sem_close(table->log_lock);
 	sem_close(table->death_lock);
+	sem_close(table->exit_lock);
 	sem_unlink("/cutlery_sem");
 	sem_unlink("/log_lock");
 	sem_unlink("/death_lock");
+	sem_unlink("/exit_lock");
 	free(table->philo_pids);
 }
 

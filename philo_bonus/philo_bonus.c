@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 03:52:40 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 04:16:55 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	philo_init(t_philo *p, t_phargs *args, int id, long long time_init)
 	p->is_dead = 0;
 	p->should_log = 1;
 	p->last_meal_time = time_init;
-	p->lock_time = LLONG_MAX;
 	p->times_to_eat = args->times_to_eat;
 }
 
@@ -81,20 +80,10 @@ void	philo_with_seat_do(
 	sem_wait(philo->philo_lock);
 	{
 		should_leave = philo->is_dead || philo->times_to_eat == 0;
-		if (!should_leave)
-			philo->lock_time = get_time_millis();
+		if (should_leave)
+			return ((void) sem_post(philo->philo_lock));
 	}
 	sem_post(philo->philo_lock);
-	if (should_leave)
-		return ;
-	sem_wait(philo->philo_lock);
-	{
-		philo->lock_time = LLONG_MAX;
-		should_leave = philo->is_dead || philo->times_to_eat == 0;
-	}
-	sem_post(philo->philo_lock);
-	if (should_leave)
-		return ;
 	action(philo, table);
 }
 

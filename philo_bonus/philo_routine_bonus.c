@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:19:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/08 03:29:27 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 04:29:19 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,9 @@ void	philo_routine(void *args)
 		philo_with_seat_do(philo_sleep, philo, table);
 		philo_with_seat_do(philo_think, philo, table);
 	}
-	if (philo->is_dead)
-		table->exit_code = philo->id;
-	else
-		table->exit_code = 0;
+	sem_wait(table->exit_lock);
+	{
+		table->exit_code = philo->id * philo->is_dead;
+	}
+	sem_post(table->exit_lock);
 }

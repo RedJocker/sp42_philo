@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:37:44 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/08 03:15:38 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 04:27:46 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,6 @@ int	philo_is_dead(t_philo *philo, t_table *table)
 	return (is_dead);
 }
 
-int	philo_has_to_leave(t_philo *philo, t_table *table)
-{
-	long long	time;
-	long long	time_locked;
-	int			has_to_leave;
-
-	sem_wait(philo->philo_lock);
-	{
-		time = get_time_millis();
-		time_locked = time - philo->lock_time;
-		has_to_leave = time_locked > 50 || philo->is_dead;
-	}
-	sem_post(philo->philo_lock);
-	return (has_to_leave);
-}
-
 int	philo_has_finished(t_philo *philo, t_table *table)
 {
 	int	has_finished;
@@ -70,7 +54,6 @@ void	*philo_monitor(void *args)
 {
 	t_table	*table;
 	t_philo	*philo;
-	int		exit_code;
 
 	table = ((t_table **) args)[1];
 	philo = ((t_philo **) args)[0];
@@ -78,16 +61,19 @@ void	*philo_monitor(void *args)
 	while (1)
 	{
 		millisleep(5);
-		if (philo_has_to_leave(philo, table) || philo_is_dead(philo, table))
+		if (philo_is_dead(philo, table))
 		{
+			sem_wait(table->exit_lock);
 			table->exit_code = philo->id;
 			break ;
 		}
 		if (philo_has_finished(philo, table))
 		{
+			sem_wait(table->exit_lock);
 			table->exit_code = 0;
 			break ;
 		}
 	}
+	sem_post(table->exit_lock);
 	return (&table->exit_code);
 }
