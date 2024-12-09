@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/08 06:41:02 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 03:52:40 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ void	philo_init(t_philo *p, t_phargs *args, int id, long long time_init)
 	ft_memcpy(p->philo_lock_name + 6, id_str, id_str_len);
 	p->philo_lock_name[6 + id_str_len] = 0;
 	free(id_str);
-	sem_unlink(p->philo_lock_name);
-	p->philo_lock = sem_open(\
-		p->philo_lock_name, O_CREAT | O_EXCL, 0777, 1);
+	p->philo_lock = ft_sem_open(p->philo_lock_name, 1);
 	p->is_dead = 0;
 	p->should_log = 1;
 	p->last_meal_time = time_init;

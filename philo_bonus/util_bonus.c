@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:31:05 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 12:00:37 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 03:49:53 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "philo_bonus.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 long long	get_time_millis(void)
 {
@@ -57,4 +58,11 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 		i++;
 	}
 	return (dst);
+}
+
+sem_t	*ft_sem_open(char *semaphore_name, int initial_value)
+{
+	sem_unlink(semaphore_name);
+	return (sem_open(semaphore_name, \
+		O_CREAT | O_EXCL, 0777, initial_value));
 }
