@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:19:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 04:29:19 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 05:37:09 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,17 @@
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "util_bonus.h"
 
 static void	philo_think(t_philo *philo, t_table *table)
 {
 	if (!philo_is_dead(philo, table))
 		philo_logger(table, "is thinking", philo);
-	millisleep(philo->think_time);
+	if (philo->think_time > 0)
+		millisleep(philo->think_time);
+	else
+		usleep(10);
 }
 
 static void	philo_eat(t_philo *philo, t_table *table)
@@ -84,7 +88,7 @@ void	philo_routine(void *args)
 	table = ((t_table **) args)[1];
 	philo = ((t_philo **) args)[0];
 	free(args);
-	millisleep((philo->id % 2 == 0) * 5);
+	millisleep((philo->id % 2 == 0) * (philo->eat_time / 5));
 	if (table->philo_pids_len == 1)
 	{
 		sem_wait(table->cutlery_sem);

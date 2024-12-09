@@ -30,8 +30,8 @@ void	philo_init(t_philo *p, t_phargs *args, int id, long long time_init)
 	p->eat_time = args->time_to_eat;
 	p->death_time = args->time_to_die;
 	p->think_time = args->time_to_die - args->time_to_eat \
-		- args->time_to_sleep - 20;
-	p->think_time = (p->think_time <= 10) * 0 + (p->think_time >= 100) * 31 \
+		- args->time_to_sleep - 5;
+	p->think_time = (p->think_time <= 0) * 0 + (p->think_time >= 100) * 31 \
 		+ (p->think_time > 0 && p->think_time < 100) * p->think_time;
 	id_str = ft_itoa(id);
 	id_str_len = ft_strlen(id_str);
