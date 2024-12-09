@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:30:59 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 04:05:26 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 05:35:05 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_philo
 
 void		philo_routine(void *args);
 int			philo_sit_table(t_table *table, t_phargs *args, int id);
-void		philo_with_seat_do(
+int			philo_with_seat_do(
 				void (*action) (t_philo*, t_table*),
 				t_philo *philo,
 				t_table *table);

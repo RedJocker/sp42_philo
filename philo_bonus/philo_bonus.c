@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 04:16:55 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 05:55:01 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	philo_start_dinning(t_philo *philo, t_table *table)
 		(void *(*)(void *)) philo_monitor, arr2);
 }
 
-void	philo_with_seat_do(
+int	philo_with_seat_do(
 	void (*action) (t_philo*, t_table*), t_philo *philo, t_table *table)
 {
 	int	should_leave;
@@ -80,11 +80,12 @@ void	philo_with_seat_do(
 	sem_wait(philo->philo_lock);
 	{
 		should_leave = philo->is_dead || philo->times_to_eat == 0;
-		if (should_leave)
-			return ((void) sem_post(philo->philo_lock));
 	}
 	sem_post(philo->philo_lock);
+	if (should_leave)
+		return (1);
 	action(philo, table);
+	return (0);
 }
 
 int	philo_sit_table(t_table *table, t_phargs *args, int id)

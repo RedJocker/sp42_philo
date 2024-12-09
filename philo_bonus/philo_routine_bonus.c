@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:19:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 05:37:09 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 05:46:26 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,18 +92,18 @@ void	philo_routine(void *args)
 	if (table->philo_pids_len == 1)
 	{
 		sem_wait(table->cutlery_sem);
-		philo_logger(table, "has taken a fork", philo);
-		return ;
+		return ((void)philo_logger(table, "has taken a fork", philo));
 	}
-	while (!philo->is_dead && philo->times_to_eat != 0)
+	while (1)
 	{
-		philo_with_seat_do(philo_take_forks, philo, table);
-		philo_with_seat_do(philo_sleep, philo, table);
-		philo_with_seat_do(philo_think, philo, table);
+		if (philo_with_seat_do(philo_take_forks, philo, table))
+			break ;
+		if (philo_with_seat_do(philo_sleep, philo, table))
+			break ;
+		if (philo_with_seat_do(philo_think, philo, table))
+			break ;
 	}
 	sem_wait(table->exit_lock);
-	{
-		table->exit_code = philo->id * philo->is_dead;
-	}
+	table->exit_code = philo->id * philo->is_dead;
 	sem_post(table->exit_lock);
 }
