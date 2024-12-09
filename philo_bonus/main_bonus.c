@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 23:46:59 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/07 11:17:14 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:08:53 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ int	main(int argc, char *argv[])
 	int				exit_status;
 
 	if (!phargs_init(&args, argc, argv))
+	{
+		printf("Invalid arguments\n");
 		return (42);
+	}
 	table_init(&table, &args);
 	exit_status = table_serve(&table, &args);
 	table_clean(&table);
