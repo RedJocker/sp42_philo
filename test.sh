@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 20:14:28 by maurodri          #+#    #+#              #
-#    Updated: 2024/12/09 09:54:39 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/09 13:28:49 by maurodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,11 +45,11 @@ else
 fi
 
 echo -e "\n::BUILDING::"
-##make
-make -C ./philo_bonus 
+make -C ./philo
+#make -C ./philo_bonus 
 
 echo -e "\n::RUNNING::"
-#$VALG ./philo/philo $ARGS
-$VALG ./philo_bonus/philo_bonus $ARGS
+$VALG ./philo/philo $ARGS
+#$VALG ./philo_bonus/philo_bonus $ARGS
 
 echo '::END::'

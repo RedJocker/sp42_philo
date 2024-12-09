@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:24:54 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/06 21:45:57 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:27:50 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	table_serve(t_table *table)
 		i = 0;
 		while (++i < table->num_philos)
 			philo_isdead(&table->philo_arr[i], table);
-		millisleep(5);
+		millisleep(5); // TODO: try improve sleep to min time_to_die (problem locks between different philos)
 	}
 }
 

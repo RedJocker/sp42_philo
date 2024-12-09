@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:22:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/02 19:32:33 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:30:37 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	philo_isdead(t_philo *philo, t_table *table)
 	int			is_dead;
 
 	pthread_mutex_lock(&philo->lock);
-	time = get_time_millis() - table->init_time;
+	time = get_time_millis();
 	if (philo->times_to_eat != 0
 		&& time - philo->last_meal_time > philo->death_time)
 	{
@@ -78,5 +78,6 @@ void	philo_spawn(t_philo *philo, t_table *table)
 	arr = malloc(2 * sizeof(void *));
 	arr[0] = philo;
 	arr[1] = table;
+	philo->last_meal_time = table->init_time;
 	pthread_create(&philo->thread, 0, (void *(*)(void *)) philo_routine, arr);
 }

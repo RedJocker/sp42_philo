@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 00:52:11 by maurodri          #+#    #+#             */
-/*   Updated: 2024/07/25 23:08:50 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:30:37 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	philo_eat(t_philo *philo, t_table *table)
 		pthread_mutex_lock(&philo->lock);
 		if (philo->times_to_eat > 0)
 			philo->times_to_eat--;
-		philo->last_meal_time = -table->init_time + get_time_millis();
+		philo->last_meal_time = get_time_millis();
 		pthread_mutex_unlock(&philo->lock);
 		millisleep(philo->eat_time);
 	}
@@ -77,6 +77,7 @@ void	philo_routine(void *args)
 	table = ((t_table **) args)[1];
 	philo = ((t_philo **) args)[0];
 	free(args);
+	//TODO: improve loop condition, pobably there is race condition
 	while (!philo->is_dead && philo->times_to_eat != 0)
 	{
 		if (table_is_serving(table))

@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/12/09 09:41:41 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/09 13:29:22 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -29,7 +29,7 @@ CFLAGS := -g3 -lpthread # -Wall -Wextra -Werror
 CC := cc
 
 
-NAME := $(MANDATORY_DIR) philo
+NAME := $(MANDATORY_DIR)philo
 INCLUDES := -I $(MANDATORY_DIR)
 OBJS := $(MANDATORY_OBJS)
 ETAGS_BASE := $(MANDATORY_DIR)
