@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 10:48:41 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 12:01:40 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	philo_init(t_philo *p, t_phargs *args, int id, long long time_init)
 	p->death_time = args->time_to_die;
 	p->think_time = args->time_to_die - args->time_to_eat \
 		- args->time_to_sleep - 5;
-	p->think_time = (p->think_time <= 0) * 0 + (p->think_time >= 100) * 31 \
-		+ (p->think_time > 0 && p->think_time < 100) * p->think_time;
+	p->think_time = (p->think_time <= 0) * 0 + (p->think_time >= 31) * 31 \
+		+ (p->think_time > 0 && p->think_time < 31) * p->think_time;
 	id_str = ft_itoa(id);
 	id_str_len = ft_strlen(id_str);
 	p->philo_lock_name = malloc(6 + id_str_len + 1);
