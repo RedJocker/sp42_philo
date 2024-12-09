@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 05:55:01 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 10:48:41 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	philo_with_seat_do(
 	should_leave = 0;
 	sem_wait(philo->philo_lock);
 	{
-		should_leave = philo->is_dead || philo->times_to_eat == 0;
+		(should_leave = philo->is_dead || philo->times_to_eat == 0);
 	}
 	sem_post(philo->philo_lock);
 	if (should_leave)

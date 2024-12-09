@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:19:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 05:46:26 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/09 10:41:14 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 static void	philo_think(t_philo *philo, t_table *table)
 {
-	if (!philo_is_dead(philo, table))
+	if (!philo_is_dead(philo, table, 0))
 		philo_logger(table, "is thinking", philo);
 	if (philo->think_time > 0)
 		millisleep(philo->think_time);
@@ -31,7 +31,7 @@ static void	philo_think(t_philo *philo, t_table *table)
 
 static void	philo_eat(t_philo *philo, t_table *table)
 {
-	if (!philo_is_dead(philo, table))
+	if (!philo_is_dead(philo, table, 0))
 	{
 		philo_logger(table, "is eating", philo);
 		sem_wait(philo->philo_lock);
@@ -48,15 +48,15 @@ static void	philo_take_forks(t_philo *philo, t_table *table)
 	int	has_finished_eating;
 
 	has_finished_eating = philo_has_finished(philo, table);
-	if (!philo_is_dead(philo, table) && !has_finished_eating)
+	if (!philo_is_dead(philo, table, 0) && !has_finished_eating)
 	{
 		sem_wait(table->cutlery_sem);
-		if (!philo_is_dead(philo, table))
+		if (!philo_is_dead(philo, table, 0))
 			philo_logger(table, "has taken a fork", philo);
-		if (!philo_is_dead(philo, table))
+		if (!philo_is_dead(philo, table, 0))
 		{
 			sem_wait(table->cutlery_sem);
-			if (!philo_is_dead(philo, table))
+			if (!philo_is_dead(philo, table, 0))
 				philo_logger(table, "has taken a fork", philo);
 			philo_eat(philo, table);
 			sem_post(table->cutlery_sem);
@@ -73,7 +73,7 @@ static void	philo_take_forks(t_philo *philo, t_table *table)
 
 static void	philo_sleep(t_philo *philo, t_table *table)
 {
-	if (!philo_is_dead(philo, table))
+	if (!philo_is_dead(philo, table, 0))
 	{
 		philo_logger(table, "is sleeping", philo);
 		millisleep(philo->sleep_time);
