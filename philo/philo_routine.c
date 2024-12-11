@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 00:52:11 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 14:30:37 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 03:51:41 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,20 @@
 #include <unistd.h>
 #include "util.h"
 
-static void	philo_think(t_philo *philo, t_table *table)
+static int	philo_think(t_philo *philo, t_table *table)
 {
-	if (!philo_isdead(philo, table))
+	if (table_is_serving(table) && !philo_isdead(philo, table, 0))
+	{
 		logger(table, "is thinking", philo->id);
-	usleep(1000);
+		usleep(1000);
+		return (1);
+	}
+	return (0);
 }
 
-static void	philo_eat(t_philo *philo, t_table *table)
+static int	philo_eat(t_philo *philo, t_table *table)
 {
-	if (!philo_isdead(philo, table))
+	if (table_is_serving(table) && !philo_isdead(philo, table, 0))
 	{
 		logger(table, "is eating", philo->id);
 		pthread_mutex_lock(&philo->lock);
@@ -33,43 +37,50 @@ static void	philo_eat(t_philo *philo, t_table *table)
 		philo->last_meal_time = get_time_millis();
 		pthread_mutex_unlock(&philo->lock);
 		millisleep(philo->eat_time);
+		return (philo->times_to_eat != 0);
 	}
+	return (0);
 }
 
-static void	philo_take_forks(t_philo *philo, t_table *table)
+static int	philo_take_forks(t_philo *philo, t_table *table)
 {
 	int			forks[2];
+	int			ret;
 
+	ret = 0;
 	philo_choose_forks(philo, table, forks);
-	if (!philo_isdead(philo, table))
+	if (table_is_serving(table) && !philo_isdead(philo, table, 0))
 	{
 		pthread_mutex_lock(&table->cutlery_arr[forks[0]].mutex);
-		if (!philo_isdead(philo, table))
+		if (!philo_isdead(philo, table, 0))
 			logger_f(table, "has taken a fork", philo->id, forks[0]);
-		while (forks[0] == forks[1] && !philo_isdead(philo, table))
+		while (forks[0] == forks[1] && !philo_isdead(philo, table, 0))
 			;
-		if (!philo_isdead(philo, table))
+		if (!philo_isdead(philo, table, 0))
 		{
 			pthread_mutex_lock(&table->cutlery_arr[forks[1]].mutex);
-			if (!philo_isdead(philo, table))
+			if (!philo_isdead(philo, table, 0))
 				logger_f(table, "has taken a fork", philo->id, forks[1]);
-			philo_eat(philo, table);
+			ret = philo_eat(philo, table);
 			pthread_mutex_unlock(&table->cutlery_arr[forks[1]].mutex);
 		}
 		pthread_mutex_unlock(&table->cutlery_arr[forks[0]].mutex);
 	}
+	return (ret);
 }
 
-static void	philo_sleep(t_philo *philo, t_table *table)
+static int	philo_sleep(t_philo *philo, t_table *table)
 {
-	if (!philo_isdead(philo, table))
+	if (table_is_serving(table) && !philo_isdead(philo, table, 0))
 	{
 		logger(table, "is sleeping", philo->id);
 		millisleep(philo->sleep_time);
+		return (1);
 	}
+	return (0);
 }
 
-void	philo_routine(void *args)
+void	*philo_routine(void *args)
 {
 	t_table	*table;
 	t_philo	*philo;
@@ -77,22 +88,19 @@ void	philo_routine(void *args)
 	table = ((t_table **) args)[1];
 	philo = ((t_philo **) args)[0];
 	free(args);
-	//TODO: improve loop condition, pobably there is race condition
-	while (!philo->is_dead && philo->times_to_eat != 0)
+	while (philo_take_forks(philo, table) \
+		&& philo_sleep(philo, table) \
+		&& philo_think(philo, table))
+		;
+	pthread_mutex_lock(&philo->lock);
 	{
-		if (table_is_serving(table))
-			philo_take_forks(philo, table);
-		if (table_is_serving(table))
-			philo_sleep(philo, table);
-		if (table_is_serving(table))
-			philo_think(philo, table);
-		else
-			break ;
+		if (philo->times_to_eat == 0)
+		{
+			pthread_mutex_lock(&table->table_lock);
+			table->hungry_philos--;
+			pthread_mutex_unlock(&table->table_lock);
+		}
 	}
-	if (philo->times_to_eat == 0)
-	{
-		pthread_mutex_lock(&table->table_lock);
-		table->hungry_philos--;
-		pthread_mutex_unlock(&table->table_lock);
-	}
+	pthread_mutex_unlock(&philo->lock);
+	return (0);
 }

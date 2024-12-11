@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:24:54 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 14:27:50 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 04:35:39 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	table_init(t_table *table, t_phargs *args)
 		cutlery_init(table->cutlery_arr + i, args);
 	i = -1;
 	while (++i < args->num_philos)
-		philo_init(table->philo_arr + i, args, i, table);
+		philo_init(table->philo_arr + i, args, i);
 }
 
 int	table_is_serving(t_table *table)
@@ -46,10 +46,33 @@ int	table_is_serving(t_table *table)
 	return (is_serving);
 }
 
-void	table_serve(t_table *table)
+static int	time_to_sleep(long long *last_meal_time, t_table *table)
 {
-	int	i;
+	long long	min_time;
+	int			time_to_sleep;
+	int			i;
 
+	min_time = last_meal_time[0];
+	i = 0;
+	while (++i < table->num_philos)
+	{
+		if (last_meal_time[i] < min_time)
+			min_time = last_meal_time[i];
+	}
+	time_to_sleep = table->philo_arr[0].death_time \
+		- ((int)(get_time_millis() - min_time - table->init_time));
+	if (time_to_sleep <= 0)
+		return (2);
+	else
+		return (time_to_sleep);
+}
+
+void	*table_serve(t_table *table)
+{
+	int			i;
+	long long	*last_meal;
+
+	last_meal = malloc(table->num_philos * sizeof(long long));
 	i = table->num_philos;
 	table->init_time = get_time_millis();
 	while (--i >= 0)
@@ -57,10 +80,13 @@ void	table_serve(t_table *table)
 	while (table_is_serving(table))
 	{
 		i = 0;
-		while (++i < table->num_philos)
-			philo_isdead(&table->philo_arr[i], table);
-		millisleep(5); // TODO: try improve sleep to min time_to_die (problem locks between different philos)
+		while (++i < table->num_philos \
+				&& !philo_isdead(table->philo_arr + i, table, last_meal + i))
+			;
+		millisleep(time_to_sleep(last_meal, table));
 	}
+	free(last_meal);
+	return (0);
 }
 
 void	table_clean(t_table *table)

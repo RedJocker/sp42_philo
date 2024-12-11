@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/12/09 13:29:22 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/11 03:32:40 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -25,7 +25,7 @@ OBJ_DIR := ./obj/
 MANDATORY_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(FILES)))
 DEP_FLAGS := -MP -MD
 VPATH := $(MANDATORY_DIR)
-CFLAGS := -g3 -lpthread # -Wall -Wextra -Werror 
+CFLAGS := -g3 -lpthread -Wall -Wextra # -Werror 
 CC := cc
 
 

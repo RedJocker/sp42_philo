@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:22:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 14:30:37 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 04:35:00 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,15 @@ void	philo_choose_forks(t_philo *philo, t_table *table, int *forks)
 	}
 }
 
-int	philo_isdead(t_philo *philo, t_table *table)
+int	philo_isdead(t_philo *philo, t_table *table, long long *out_last_meal_time)
 {
 	long long	time;
 	int			should_log;
 	int			is_dead;
 
 	pthread_mutex_lock(&philo->lock);
+	if (out_last_meal_time)
+		*out_last_meal_time = philo->last_meal_time;
 	time = get_time_millis();
 	if (philo->times_to_eat != 0
 		&& time - philo->last_meal_time > philo->death_time)
@@ -59,7 +61,7 @@ void	philo_clean(t_philo *philo)
 	pthread_mutex_destroy(&philo->lock);
 }
 
-void	philo_init(t_philo *philo, t_phargs *args, int i, t_table *table)
+void	philo_init(t_philo *philo, t_phargs *args, int i)
 {
 	philo->id = i + 1;
 	philo->times_to_eat = args->times_to_eat;
