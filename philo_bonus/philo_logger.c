@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 03:09:04 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 04:02:36 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:16:19 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	log_death(t_table *table, int philo_id)
 	printf("%lld %d died\n", table->time_of_death, philo_id);
 }
 
-void	philo_logger(t_table *table, char *message, t_philo *philo)
+void	*philo_logger(t_table *table, char *message, t_philo *philo)
 {
 	long long	uptime;
 	long long	time;
@@ -30,7 +30,7 @@ void	philo_logger(t_table *table, char *message, t_philo *philo)
 	sem_wait(philo->philo_lock);
 	{
 		if (!philo->should_log)
-			return ((void)(sem_post(philo->philo_lock)));
+			return ((void *)((long)sem_post(philo->philo_lock)));
 		time = get_time_millis();
 		sem_wait(table->log_lock);
 		{
@@ -41,4 +41,5 @@ void	philo_logger(t_table *table, char *message, t_philo *philo)
 			sem_post(table->log_lock);
 	}
 	sem_post(philo->philo_lock);
+	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/12/09 09:53:25 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/11 13:07:04 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -27,7 +27,7 @@ OBJ_DIR := ./obj/
 BONUS_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(BONUS_FILES)))
 DEP_FLAGS := -MP -MD
 VPATH := $(BONUS_DIR)
-CFLAGS := -g3 -lpthread # -Wall -Wextra -Werror 
+CFLAGS := -g3 -lpthread -Wall -Wextra -Werror
 CC := cc
 
 NAME := $(BONUS_DIR)philo_bonus

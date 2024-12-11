@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:19:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 10:41:14 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:13:26 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	philo_take_forks(t_philo *philo, t_table *table)
 {
 	int	has_finished_eating;
 
-	has_finished_eating = philo_has_finished(philo, table);
+	has_finished_eating = philo_has_finished(philo);
 	if (!philo_is_dead(philo, table, 0) && !has_finished_eating)
 	{
 		sem_wait(table->cutlery_sem);
@@ -80,7 +80,7 @@ static void	philo_sleep(t_philo *philo, t_table *table)
 	}
 }
 
-void	philo_routine(void *args)
+void	*philo_routine(void *args)
 {
 	t_table	*table;
 	t_philo	*philo;
@@ -92,7 +92,7 @@ void	philo_routine(void *args)
 	if (table->philo_pids_len == 1)
 	{
 		sem_wait(table->cutlery_sem);
-		return ((void)philo_logger(table, "has taken a fork", philo));
+		return (philo_logger(table, "has taken a fork", philo));
 	}
 	while (1)
 	{
@@ -106,4 +106,5 @@ void	philo_routine(void *args)
 	sem_wait(table->exit_lock);
 	table->exit_code = philo->id * philo->is_dead;
 	sem_post(table->exit_lock);
+	return (0);
 }

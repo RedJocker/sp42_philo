@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:30:59 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 10:53:32 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:15:09 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_philo
 	pthread_t		monitoring;
 }	t_philo;
 
-void		philo_routine(void *args);
+void		*philo_routine(void *args);
 int			philo_sit_table(t_table *table, t_phargs *args, int id);
 int			philo_with_seat_do(
 				void (*action) (t_philo*, t_table*),
@@ -44,9 +44,9 @@ int			philo_with_seat_do(
 int			philo_is_dead(
 				t_philo *philo, t_table *table, long long *out_time_to_die);
 long long	philo_sit_down(t_philo *philo);
-int			philo_has_finished(t_philo *philo, t_table *table);
-void		philo_monitor(void *args);
-void		philo_logger(t_table *table, char *message, t_philo *philo);
+int			philo_has_finished(t_philo *philo);
+void		*philo_monitor(void *args);
+void		*philo_logger(t_table *table, char *message, t_philo *philo);
 void		log_death(t_table *table, int philo_id);
 
 #endif

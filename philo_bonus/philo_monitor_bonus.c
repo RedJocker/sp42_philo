@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:37:44 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 12:01:22 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:15:53 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	philo_is_dead(t_philo *philo, t_table *table, long long *out_time_to_die)
 	return (is_dead);
 }
 
-int	philo_has_finished(t_philo *philo, t_table *table)
+int	philo_has_finished(t_philo *philo)
 {
 	int	has_finished;
 
@@ -53,7 +53,7 @@ int	philo_has_finished(t_philo *philo, t_table *table)
 	return (has_finished);
 }
 
-void	philo_monitor(void *args)
+void	*philo_monitor(void *args)
 {
 	t_table		*table;
 	t_philo		*philo;
@@ -72,12 +72,12 @@ void	philo_monitor(void *args)
 			table->exit_code = philo->id;
 			break ;
 		}
-		if (philo_has_finished(philo, table))
+		if (philo_has_finished(philo))
 		{
 			sem_wait(table->exit_lock);
 			table->exit_code = 0;
 			break ;
 		}
 	}
-	return ((void)sem_post(table->exit_lock));
+	return ((void *)((long)sem_post(table->exit_lock)));
 }

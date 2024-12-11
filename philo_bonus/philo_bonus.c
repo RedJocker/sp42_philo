@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 01:10:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/09 12:01:40 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:16:03 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	philo_with_seat_do(
 	void (*action) (t_philo*, t_table*), t_philo *philo, t_table *table)
 {
 	int	should_leave;
-	int	num_locks;
 
 	should_leave = 0;
 	sem_wait(philo->philo_lock);
