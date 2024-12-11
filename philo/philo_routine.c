@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 00:52:11 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/11 03:51:41 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 06:44:39 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ static int	philo_think(t_philo *philo, t_table *table)
 	if (table_is_serving(table) && !philo_isdead(philo, table, 0))
 	{
 		logger(table, "is thinking", philo->id);
-		usleep(1000);
+		if (philo->think_time > 0)
+			millisleep(philo->think_time);
+		else
+			usleep(50);
 		return (1);
 	}
 	return (0);
@@ -88,6 +91,7 @@ void	*philo_routine(void *args)
 	table = ((t_table **) args)[1];
 	philo = ((t_philo **) args)[0];
 	free(args);
+	millisleep((philo->id % 2 == 0) * (philo->eat_time / 5));
 	while (philo_take_forks(philo, table) \
 		&& philo_sleep(philo, table) \
 		&& philo_think(philo, table))

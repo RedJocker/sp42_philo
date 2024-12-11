@@ -71,6 +71,11 @@ void	philo_init(t_philo *philo, t_phargs *args, int i)
 	philo->last_meal_time = 0;
 	philo->is_dead = 0;
 	pthread_mutex_init(&philo->lock, 0);
+	philo->think_time = args->time_to_die - args->time_to_eat \
+		- args->time_to_sleep - 10;
+	philo->think_time = (philo->think_time <= 0) * 0 \
+		+ (philo->think_time >= 31) * 31 \
+		+ (philo->think_time > 0 && philo->think_time < 31) * philo->think_time;
 }
 
 void	philo_spawn(t_philo *philo, t_table *table)

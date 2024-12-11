@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:15:41 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/11 03:49:40 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 04:56:26 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_philo
 	int				id;
 	int				sleep_time;
 	int				eat_time;
+	int				think_time;
 	int				death_time;
 	int				is_dead;
 	long long		last_meal_time;
