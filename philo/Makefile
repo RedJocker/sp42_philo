@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/12/11 12:29:45 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/11 13:45:49 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -19,7 +19,8 @@ FILES := cutlery.c \
 	philo.c \
 	philo_routine.c \
 	table.c \
-	util.c
+	util.c \
+	util2.c \
 
 OBJ_DIR := ./obj/
 MANDATORY_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(FILES)))

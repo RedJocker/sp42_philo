@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 00:52:11 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/11 06:44:39 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:40:48 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,15 @@
 
 static int	philo_think(t_philo *philo, t_table *table)
 {
-	if (table_is_serving(table) && !philo_isdead(philo, table, 0))
+	long long	last_meal;
+	int			time_to_death;
+
+	if (table_is_serving(table) && !philo_isdead(philo, table, &last_meal))
 	{
+		time_to_death = time_to_die(philo, last_meal);
 		logger(table, "is thinking", philo->id);
+		if (time_to_death < philo->think_time)
+			millisleep(time_to_death - 10);
 		if (philo->think_time > 0)
 			millisleep(philo->think_time);
 		else
@@ -31,6 +37,9 @@ static int	philo_think(t_philo *philo, t_table *table)
 
 static int	philo_eat(t_philo *philo, t_table *table)
 {
+	long long	last_meal;
+	int			time_to_death;
+
 	if (table_is_serving(table) && !philo_isdead(philo, table, 0))
 	{
 		logger(table, "is eating", philo->id);
@@ -38,8 +47,13 @@ static int	philo_eat(t_philo *philo, t_table *table)
 		if (philo->times_to_eat > 0)
 			philo->times_to_eat--;
 		philo->last_meal_time = get_time_millis();
+		last_meal = philo->last_meal_time;
 		pthread_mutex_unlock(&philo->lock);
-		millisleep(philo->eat_time);
+		time_to_death = time_to_die(philo, last_meal);
+		if (time_to_death < philo->eat_time)
+			millisleep(time_to_death);
+		else
+			millisleep(philo->eat_time);
 		return (philo->times_to_eat != 0);
 	}
 	return (0);
@@ -74,10 +88,17 @@ static int	philo_take_forks(t_philo *philo, t_table *table)
 
 static int	philo_sleep(t_philo *philo, t_table *table)
 {
-	if (table_is_serving(table) && !philo_isdead(philo, table, 0))
+	long long	last_meal;
+	int			time_to_death;
+
+	if (table_is_serving(table) && !philo_isdead(philo, table, &last_meal))
 	{
+		time_to_death = time_to_die(philo, last_meal);
 		logger(table, "is sleeping", philo->id);
-		millisleep(philo->sleep_time);
+		if (time_to_death < philo->sleep_time)
+			millisleep(time_to_death + 2);
+		else
+			millisleep(philo->sleep_time);
 		return (1);
 	}
 	return (0);
@@ -91,7 +112,7 @@ void	*philo_routine(void *args)
 	table = ((t_table **) args)[1];
 	philo = ((t_philo **) args)[0];
 	free(args);
-	millisleep((philo->id % 2 == 0) * (philo->eat_time / 5));
+	millisleep((philo->id % 2 == 0) * (philo->death_time / 5));
 	while (philo_take_forks(philo, table) \
 		&& philo_sleep(philo, table) \
 		&& philo_think(philo, table))
