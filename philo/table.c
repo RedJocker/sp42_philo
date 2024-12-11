@@ -6,11 +6,12 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:24:54 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/11 04:35:39 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/11 07:01:33 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <string.h>
 #include "table.h"
 #include "util.h"
 
@@ -24,11 +25,12 @@ void	table_init(t_table *table, t_phargs *args)
 	table->any_death = 0;
 	table->hungry_philos = args->num_philos;
 	table->init_time = -1;
+	table->should_log = 1;
 	pthread_mutex_init(&table->log_lock, 0);
 	pthread_mutex_init(&table->table_lock, 0);
 	i = -1;
 	while (++i < args->num_philos)
-		cutlery_init(table->cutlery_arr + i, args);
+		cutlery_init(table->cutlery_arr + i);
 	i = -1;
 	while (++i < args->num_philos)
 		philo_init(table->philo_arr + i, args, i);
@@ -73,6 +75,7 @@ void	*table_serve(t_table *table)
 	long long	*last_meal;
 
 	last_meal = malloc(table->num_philos * sizeof(long long));
+	memset(last_meal, 0, table->num_philos * sizeof(long long));
 	i = table->num_philos;
 	table->init_time = get_time_millis();
 	while (--i >= 0)
