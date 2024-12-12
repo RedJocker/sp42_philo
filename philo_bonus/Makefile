@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/15 17:53:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/12/11 13:07:04 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/12 14:03:08 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -27,7 +27,8 @@ OBJ_DIR := ./obj/
 BONUS_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(BONUS_FILES)))
 DEP_FLAGS := -MP -MD
 VPATH := $(BONUS_DIR)
-CFLAGS := -g3 -lpthread -Wall -Wextra -Werror
+CFLAGS := -g3 -Wall -Wextra -Werror
+LFLAGS := -lpthread
 CC := cc
 
 NAME := $(BONUS_DIR)philo_bonus
@@ -40,7 +41,7 @@ DEP_FILES := $(patsubst %.o, %.d, $(OBJS))
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $^ $(INCLUDES) -o $@
+	$(CC) $(CFLAGS) $(LFLAGS) $^ $(INCLUDES) -o $@
 	etags $$(find $(ETAGS_BASE) -name '*.[ch]') --include '~/glibc/TAGS'
 
 $(OBJS): $(OBJ_DIR)%.o : %.c | $(OBJ_DIR)
