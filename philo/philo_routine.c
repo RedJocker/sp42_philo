@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 00:52:11 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/11 14:40:48 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/12 12:01:25 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ static int	philo_think(t_philo *philo, t_table *table)
 
 static int	philo_eat(t_philo *philo, t_table *table)
 {
-	long long	last_meal;
-	int			time_to_death;
-
 	if (table_is_serving(table) && !philo_isdead(philo, table, 0))
 	{
 		logger(table, "is eating", philo->id);
@@ -47,11 +44,9 @@ static int	philo_eat(t_philo *philo, t_table *table)
 		if (philo->times_to_eat > 0)
 			philo->times_to_eat--;
 		philo->last_meal_time = get_time_millis();
-		last_meal = philo->last_meal_time;
 		pthread_mutex_unlock(&philo->lock);
-		time_to_death = time_to_die(philo, last_meal);
-		if (time_to_death < philo->eat_time)
-			millisleep(time_to_death);
+		if (philo->death_time < philo->eat_time)
+			millisleep(philo->death_time + 2);
 		else
 			millisleep(philo->eat_time);
 		return (philo->times_to_eat != 0);

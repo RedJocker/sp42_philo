@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 20:14:28 by maurodri          #+#    #+#              #
-#    Updated: 2024/12/11 14:15:31 by maurodri         ###   ########.fr        #
+#    Updated: 2024/12/12 11:41:38 by maurodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,15 +49,23 @@ else
     #ARGS="3 401 99 200 100"
     #ARGS="4 401 99 200 100"
     #ARGS="5 401 99 200 100"
-    ARGS="6 401 99 200 100"
+    #ARGS="6 401 99 200 100"
+    #ARGS="100 415 200 200 100"
+    ARGS="2 403 200 200 100"
 fi
 
 echo -e "\n::BUILDING::"
-make re -C ./philo
-#make re -C ./philo_bonus 
+if [[ "$3" =~ ^[bB] ]]; then
+    make re -C ./philo_bonus 
+else
+    make re -C ./philo
+fi
 
 echo -e "\n::RUNNING::"
-$VALG ./philo/philo $ARGS
-#$VALG ./philo_bonus/philo_bonus $ARGS
-
+if [[ "$3" =~ ^[bB] ]]; then
+    $VALG ./philo_bonus/philo_bonus $ARGS
+else
+    $VALG ./philo/philo $ARGS
+fi
+    
 echo '::END::'

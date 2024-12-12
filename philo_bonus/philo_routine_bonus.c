@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 02:19:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/12/11 14:48:19 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/12/12 11:55:07 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ static void	philo_think(t_philo *philo, t_table *table)
 
 static void	philo_eat(t_philo *philo, t_table *table)
 {
-	long long	time_to_death;
-
-	if (!philo_is_dead(philo, table, &time_to_death))
+	if (!philo_is_dead(philo, table, 0))
 	{
 		philo_logger(table, "is eating", philo);
 		sem_wait(philo->philo_lock);
@@ -45,8 +43,8 @@ static void	philo_eat(t_philo *philo, t_table *table)
 			philo->last_meal_time = get_time_millis();
 		}
 		sem_post(philo->philo_lock);
-		if (time_to_death < philo->eat_time)
-			millisleep(time_to_death);
+		if (philo->death_time < philo->eat_time)
+			millisleep(philo->death_time + 2);
 		else
 			millisleep(philo->eat_time);
 	}
